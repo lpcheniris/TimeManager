@@ -31,6 +31,7 @@
 import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
+import axios from 'axios'
 
 export default {
   name: "Timer",
@@ -81,7 +82,11 @@ export default {
         endTime: this.endTime.valueOf(),
         durationTime: this.durationTime,
       };
-      console.log(data)
+      axios({
+        method: "post",
+        url: "http://localhost:8000",
+        data:  data,
+      })
     },
   },
 };
