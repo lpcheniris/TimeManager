@@ -84,8 +84,8 @@ export default {
       };
       axios({
         method: "post",
-        url: "http://localhost:8000",
-        data:  data,
+        url: "/api/timer",
+        data:  data
       })
     },
   },
