@@ -81,6 +81,8 @@ export default {
         startTime: this.startTime.valueOf(),
         endTime: this.endTime.valueOf(),
         durationTime: this.durationTime,
+        plane: "study",
+        event: "program"
       };
       axios({
         method: "post",

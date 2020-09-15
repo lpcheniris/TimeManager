@@ -1,10 +1,14 @@
 import { NextFunction, Request, Response, Router } from 'express';
+
+import { Timer } from "../models/Timer"
+
 export const TimerController: Router = Router();
 
 TimerController.post('/', async (req: Request, res: Response, next: NextFunction) => {
-    let data = req.body;
+    let timer = req.body;
     try {
-        res.send({ data: "success" });
+        const timerModel = await new Timer(timer).save()
+        res.send({ id: timerModel._id });
     } catch (e) {
         next(e);
     }
