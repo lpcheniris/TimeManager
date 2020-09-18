@@ -1,16 +1,20 @@
 <template>
-  <Timer></Timer>
+  <div>
+    <Timer></Timer>
+    <TimerList></TimerList>
+  </div>
 </template>
 
 <script>
-import Timer from "./timer.vue"
+import Timer from "./timer";
+import TimerList from "./timerList";
 
 export default {
   components: {
-    Timer
-  }
+    Timer,
+    TimerList,
+  },
 };
-
 </script>
 
 <style>

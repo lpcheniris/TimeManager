@@ -14,3 +14,20 @@ TimerController.post('/', async (req: Request, res: Response, next: NextFunction
     }
 });
 
+TimerController.get('/', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const data = await Timer.find({}).populate({path: "plane"}).exec()
+      res.send({ data: data })
+    } catch (err) {
+      next(err)
+    }
+})
+
+TimerController.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await Timer.remove({ _id: req.params.id })
+        res.send({ message: "deleted" })
+      } catch (err) {
+        next(err)
+      }
+})
