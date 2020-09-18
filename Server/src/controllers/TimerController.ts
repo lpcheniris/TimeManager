@@ -9,8 +9,8 @@ TimerController.post('/', async (req: Request, res: Response, next: NextFunction
     try {
         const timerModel = await new Timer(timer).save()
         res.send({ id: timerModel._id });
-    } catch (e) {
-        next(e);
+    } catch (err) {
+        next(err)
     }
 });
 
