@@ -1,29 +1,70 @@
 <template>
   <div class="container">
-    <div class="time-picker-container">
-      <a-time-picker class="time-picker" v-model="startTime" />
-      <a-button
-        class="circle-button"
-        shape="circle"
-        size="large"
-        type="primary"
-        v-on:click="startClick"
-      >Start</a-button>
+    <div class="plane-container">
+      <div
+        class="plane-item"
+        :key="plane._id"
+        v-for="plane in planes"
+        v-on:click="() => focusPlane(plane._id)"
+      >
+        <div
+          class="plane-color-container"
+          :style="{'border-color': activePlane == plane._id ? plane.color : '#fff' }"
+        >
+          <div class="plane-color" :style="{background: plane.color}"></div>
+        </div>
+        <p :style="{'color': activePlane == plane._id ? plane.color : '#777' }">{{plane.name}}</p>
+      </div>
     </div>
-    <div class="time-picker-container">
-      <a-time-picker class="time-picker" :value="endTime" />
-      <a-button
-        class="circle-button"
-        shape="circle"
-        size="large"
-        type="primary"
-        v-on:click="endClick"
-      >End</a-button>
-    </div>
-    <div class="timer-container">{{durationText}}</div>
-    <div class="submit-container">
-      <a-button type="primary" @click="submit" :disabled="!this.endTime">Submit</a-button>
-    </div>
+
+    <a-form class="form-container" :form="timerForm">
+      <a-form-item class="event-container">
+        <a-input
+          placeholder="Event"
+          v-decorator="['event', { rules: [{ required: true, message: 'Please input your event!'}] }]"
+        />
+      </a-form-item>
+
+      <a-form-item class="time-picker-container">
+        <a-time-picker
+          class="time-picker"
+          v-decorator="[
+          'startTime',
+          { rules: [{ required: true, message: 'Please select your Start Time!' }] },
+        ]"
+        />
+        <a-button
+          class="circle-button"
+          shape="circle"
+          size="large"
+          type="primary"
+          v-on:click="startTimer"
+        >Start</a-button>
+      </a-form-item>
+
+      <a-form-item class="time-picker-container">
+        <a-time-picker
+          class="time-picker"
+          v-decorator="[
+          'endTime',
+          { rules: [{ required: true, message: 'Please select your End Time!' }] },
+        ]"
+        />
+        <a-button
+          class="circle-button"
+          shape="circle"
+          size="large"
+          type="primary"
+          v-on:click="endTimer"
+        >End</a-button>
+      </a-form-item>
+
+      <div class="timer-container">{{durationText}}</div>
+
+      <div class="submit-container">
+        <a-button type="primary" html-type="submit" @click="handleSubmit">Submit</a-button>
+      </div>
+    </a-form>
   </div>
 </template>
 
@@ -31,27 +72,41 @@
 import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
-import axios from 'axios'
+import axios from "axios";
 
 export default {
   name: "Timer",
   data() {
     return {
-      startTime: "",
-      endTime: "",
       intervelTimer: "",
       durationTime: "",
       durationText: "00:00:00",
       durationHours: 0,
       durationMinutes: 0,
       durationSeconds: 0,
+      planes: [],
+      activePlane: "Soft Skills",
+      event: "",
     };
   },
+  beforeCreate() {
+    this.timerForm = this.$form.createForm(this, { name: "validate form" });
+  },
+  mounted: function () {
+    axios({
+      method: "get",
+      url: "api/plane/",
+    }).then((res) => {
+      this.planes = res.data.data;
+      this.activePlane = this.planes[0]._id;
+    });
+  },
   methods: {
-    startClick() {
-      this.endTime = "";
-      this.startTime = moment();
-      this.intervelTimer = null;
+    startTimer() {
+      this.timerForm.setFieldsValue({ endTime: "" });
+      let time = moment();
+      this.timerForm.setFieldsValue({ startTime: time });
+      this.validateTimer();
       this.intervelTimer = moment.duration(1, "seconds").timer(
         {
           loop: true,
@@ -59,12 +114,23 @@ export default {
         this.setIntervelTime
       );
     },
-    endClick() {
-      this.endTime = moment();
-      this.intervelTimer.stop();
+    endTimer() {
+      this.validateTimer();
+      let time = moment();
+      this.timerForm.setFieldsValue({ endTime: time });
+      this.setIntervelTime(time);
     },
-    setIntervelTime() {
-      let duration = moment.duration(moment().diff(this.startTime));
+    validateTimer() {
+      if (!!this.intervelTimer) {
+        this.intervelTimer.stop();
+      }
+    },
+    focusPlane(palneId) {
+      this.activePlane = palneId;
+    },
+    setIntervelTime(time) {
+      let startTime = this.timerForm.getFieldValue("startTime");
+      let duration = moment.duration(moment().diff(startTime));
       this.durationTime = duration.seconds();
       this.durationHours = numeral(duration.hours()).format("00");
       this.durationMinutes = numeral(duration.minutes()).format("00");
@@ -76,45 +142,103 @@ export default {
         ":" +
         this.durationSeconds;
     },
-    submit() {
-      let data = {
-        startTime: this.startTime.valueOf(),
-        endTime: this.endTime.valueOf(),
-        durationTime: this.durationTime,
-        plane: "study",
-        event: "program"
-      };
-      axios({
-        method: "post",
-        url: "/api/timer",
-        data:  data
-      })
+    handleSubmit() {
+      this.timerForm.validateFieldsAndScroll((err, values) => {
+        if (!err) {
+          let data = {
+            ...values,
+            durationTime: this.durationTime,
+            plane: this.activePlane,
+          };
+          axios({
+            method: "post",
+            url: "/api/timer",
+            data: data,
+          }).then(() => {
+            this.timerForm.resetFields();
+          });
+        }
+      });
     },
   },
 };
 </script>
 
 <style>
-.time-picker {
-  min-width: 50%;
+.plane-item div {
+  border-radius: 3px;
 }
+
+.plane-item > p {
+  text-align: center;
+}
+
+.plane-color-container {
+  width: 58px;
+  height: 58px;
+  border-style: solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+}
+
+.plane-color {
+  width: 50px;
+  height: 50px;
+}
+
+.plane-item {
+  flex: 1;
+  margin: 10px;
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.plane-container {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.submit-container {
+  display: flex;
+  justify-content: center;
+}
+
+.time-picker {
+  width: 100%;
+}
+
 .circle-button {
   margin-top: 10px;
 }
-.submit-container {
-  text-align: center;
-}
+
 .timer-container {
   text-align: center;
   font-size: 38px;
   margin-bottom: 20px;
 }
+
+.event-container {
+  margin: 20px 0 30px;
+}
+
 .time-picker-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   margin: 20px 0;
+  text-align: center;
+}
+.form-container {
+  width: 128px;
+  min-width: 50%;
+  margin: auto;
 }
 .container {
   margin: 0 auto;
