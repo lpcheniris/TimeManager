@@ -26,7 +26,6 @@ export default {
     },
     timePeriodChange(timePeriod) {
       this.timePeriod = timePeriod
-      console.log(this.timePeriod)
     }
   }
 

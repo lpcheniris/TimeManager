@@ -108,7 +108,6 @@ export default {
       }
     },
     planeChange(palneId) {
-      console.log(palneId)
       this.activePlane = palneId;
     },
     setIntervelTime(time) {
