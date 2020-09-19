@@ -1,27 +1,11 @@
 <template>
-  <div class="container">
-    <div class="plane-container">
-      <div
-        class="plane-item"
-        :key="plane._id"
-        v-for="plane in planes"
-        v-on:click="() => focusPlane(plane._id)"
-      >
-        <div
-          class="plane-color-container"
-          :style="{'border-color': activePlane == plane._id ? plane.color : '#fff' }"
-        >
-          <div class="plane-color" :style="{background: plane.color}"></div>
-        </div>
-        <p :style="{'color': activePlane == plane._id ? plane.color : '#777' }">{{plane.name}}</p>
-      </div>
-    </div>
-
+  <div class="timer-container">
+    <Plane @change="planeChange"></Plane>
     <a-form class="form-container" :form="timerForm">
-      <a-form-item class="event-container">
+      <a-form-item class="schedule-container">
         <a-input
-          placeholder="Event"
-          v-decorator="['event', { rules: [{ required: true, message: 'Please input your event!'}] }]"
+          placeholder="Schedule"
+          v-decorator="['schedule', { rules: [{ required: true, message: 'Please input your schedule!'}] }]"
         />
       </a-form-item>
 
@@ -61,7 +45,7 @@
         >End</a-button>
       </a-form-item>
 
-      <div class="timer-container">{{durationText}}</div>
+      <div class="duration-container">{{durationText}}</div>
 
       <div class="submit-container">
         <a-button type="primary" html-type="submit" @click="handleSubmit">Submit</a-button>
@@ -75,9 +59,13 @@ import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
 import axios from "axios";
+import Plane from "../components/Plane";
 
 export default {
   name: "Timer",
+  components: {
+    Plane,
+  },
   data() {
     return {
       intervelTimer: "",
@@ -86,23 +74,14 @@ export default {
       durationHours: 0,
       durationMinutes: 0,
       durationSeconds: 0,
-      planes: [],
       activePlane: "Soft Skills",
-      event: "",
+      schedule: "",
     };
   },
   beforeCreate() {
     this.timerForm = this.$form.createForm(this, { name: "validate form" });
   },
-  mounted: function () {
-    axios({
-      method: "get",
-      url: "api/plane/",
-    }).then((res) => {
-      this.planes = res.data.data;
-      this.activePlane = this.planes[0]._id;
-    });
-  },
+  mounted: function () {},
   methods: {
     startTimer() {
       this.timerForm.setFieldsValue({ endTime: "" });
@@ -122,12 +101,14 @@ export default {
       this.timerForm.setFieldsValue({ endTime: time });
       this.setIntervelTime(time);
     },
+    
     validateTimer() {
       if (!!this.intervelTimer) {
         this.intervelTimer.stop();
       }
     },
-    focusPlane(palneId) {
+    planeChange(palneId) {
+      console.log(palneId)
       this.activePlane = palneId;
     },
     setIntervelTime(time) {
@@ -167,45 +148,6 @@ export default {
 </script>
 
 <style>
-.plane-item div {
-  border-radius: 3px;
-}
-
-.plane-item > p {
-  text-align: center;
-}
-
-.plane-color-container {
-  width: 58px;
-  height: 58px;
-  border-style: solid;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-width: 2px;
-}
-
-.plane-color {
-  width: 50px;
-  height: 50px;
-}
-
-.plane-item {
-  flex: 1;
-  margin: 10px;
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.plane-container {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-around;
-}
-
 .submit-container {
   display: flex;
   justify-content: center;
@@ -224,13 +166,13 @@ export default {
   color: rgba(0, 0, 0, 0.75);
 }
 
-.timer-container {
+.duration-container {
   text-align: center;
   font-size: 38px;
   margin-bottom: 20px;
 }
 
-.event-container {
+.schedule-container {
   margin: 20px 0 30px;
 }
 
@@ -247,12 +189,8 @@ export default {
   min-width: 50%;
   margin: auto;
 }
-.container {
+.timer-container {
   margin: 0 auto;
   min-height: 100vh;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

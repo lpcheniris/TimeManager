@@ -5,7 +5,7 @@ const TimerSchema = new mongoose.Schema({
   endTime: { type: Date, required: true },
   startTime: { type: Date, required: true },
   plane: { type: mongoose.Schema.Types.ObjectId, ref: Plane,required: true },
-  event: { type: String, required: true, minlength:2 , maxlength: 15}
+  schedule: { type: String, required: true, minlength:2 , maxlength: 15}
 })
 
 export const Timer = mongoose.model("Timer", TimerSchema)

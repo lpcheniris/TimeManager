@@ -10,7 +10,7 @@
         <div class="plane-name-block" :style="{'background': timer.plane.color}"></div>
         <div>{{timer.plane.name}}</div>
       </div>
-      <p>{{timer.event}}</p>
+      <p>{{timer.scheduleule}}</p>
       <p class="duration">{{transferDuration(timer.durationTime)}}</p>
       <p>{{transferTime(timer.startTime) + " -- "+ transferTime(timer.endTime)}}</p>
     </div>
@@ -39,7 +39,7 @@ export default {
       this.timers = res.data.data;
     });
   },
-  
+
   methods: {
     transferDuration(time) {
       let hours = numeral(time / 3600).format("00");
@@ -82,9 +82,5 @@ export default {
 }
 .timerlist-container {
   min-height: 100vh;
-}
-
-.links {
-  padding-top: 15px;
 }
 </style>

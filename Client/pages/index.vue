@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AddSchedule></AddSchedule>
     <Timer></Timer>
     <TimerList></TimerList>
   </div>
@@ -8,11 +9,13 @@
 <script>
 import Timer from "./timer";
 import TimerList from "./timerList";
+import AddSchedule from "./addSchedule"
 
 export default {
   components: {
     Timer,
     TimerList,
+    AddSchedule,
   },
 };
 </script>
