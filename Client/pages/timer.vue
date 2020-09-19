@@ -28,6 +28,7 @@
       <a-form-item class="time-picker-container">
         <a-time-picker
           class="time-picker"
+          disabled
           v-decorator="[
           'startTime',
           { rules: [{ required: true, message: 'Please select your Start Time!' }] },
@@ -45,6 +46,7 @@
       <a-form-item class="time-picker-container">
         <a-time-picker
           class="time-picker"
+          disabled
           v-decorator="[
           'endTime',
           { rules: [{ required: true, message: 'Please select your End Time!' }] },
@@ -215,6 +217,11 @@ export default {
 
 .circle-button {
   margin-top: 10px;
+}
+
+.ant-time-picker-input[disabled] {
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.75);
 }
 
 .timer-container {
