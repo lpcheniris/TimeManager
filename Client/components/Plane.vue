@@ -31,14 +31,15 @@ export default {
       activePlane: "",
     };
   },
-
+  props: ["defaultPlane"],
   mounted: function () {
     axios({
       method: "get",
-      url: "api/plane/",
+      url: "/api/plane/",
     }).then((res) => {
       this.planes = res.data.data;
-      this.activePlane = this.planes[0]._id;
+      this.activePlane = this.defaultPlane || this.planes[0]._id;
+      this.$emit("initValue", this.planes[0]._id )
     });
   },
   methods: {
@@ -88,5 +89,6 @@ export default {
   margin-top: 10px;
   display: flex;
   justify-content: space-around;
+  height: 135px;
 }
 </style>

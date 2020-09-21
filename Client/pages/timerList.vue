@@ -19,7 +19,6 @@
 
 <script>
 import moment, { duration, months } from "moment";
-import timer from "moment-timer";
 import numeral from "numeral";
 import axios from "axios";
 
@@ -34,7 +33,7 @@ export default {
   mounted: function () {
     axios({
       method: "get",
-      url: "api/timer/",
+      url: "/api/timer/",
     }).then((res) => {
       this.timers = res.data.data;
     });
@@ -65,7 +64,7 @@ export default {
   border-radius: 10px;
   margin-right: 8px;
 }
-.plane-name {
+.timer-item-container > .plane-name {
   color: 14px;
   display: flex;
   font-weight: bold;
@@ -80,7 +79,5 @@ export default {
   margin: 20px;
   border-radius: 5px;
 }
-.timerlist-container {
-  min-height: 100vh;
-}
+
 </style>

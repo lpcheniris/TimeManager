@@ -1,12 +1,18 @@
 <template>
   <div class="timer-container">
-    <Plane @change="planeChange"></Plane>
+    <Plane :defaultPlane="activePlane" @change="planeChange" @initValue="(planeId) => initPlane(planeId)"></Plane>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
-        <a-input
+        <a-select
           placeholder="Schedule"
           v-decorator="['schedule', { rules: [{ required: true, message: 'Please input your schedule!'}] }]"
-        />
+        >
+          <a-select-option
+            :key="schedule._id"
+            v-for="schedule in schedules"
+            :value="schedule._id"
+          >{{schedule.schedule}}</a-select-option>
+        </a-select>
       </a-form-item>
 
       <a-form-item class="time-picker-container">
@@ -59,7 +65,7 @@ import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
 import axios from "axios";
-import Plane from "../components/Plane";
+import Plane from "../../../components/Plane";
 
 export default {
   name: "Timer",
@@ -74,15 +80,32 @@ export default {
       durationHours: 0,
       durationMinutes: 0,
       durationSeconds: 0,
-      activePlane: "Soft Skills",
+      activePlane: "",
       schedule: "",
+      schedules: [],
     };
   },
   beforeCreate() {
-    this.timerForm = this.$form.createForm(this, { name: "validate form" });
+    this.timerForm = this.$form.createForm(this, { name: "timer form" });
   },
-  mounted: function () {},
+  mounted: function () {
+    if (!!this.$nuxt.$route.params.plane) {
+      let plane = this.$nuxt.$route.params.plane;
+      this.activePlane = plane;
+    }
+  },
   methods: {
+    initPlane(planeId) {
+      if (!!this.activePlane) {
+        if (!!this.$nuxt.$route.params.schedule) {
+          this.refreshSchedule(this.activePlane, true);
+        } else {
+          this.refreshSchedule(this.activePlane, false);
+        }
+      } else {
+        this.planeChange(planeId);
+      }
+    },
     startTimer() {
       this.timerForm.setFieldsValue({ endTime: "" });
       let time = moment();
@@ -101,7 +124,7 @@ export default {
       this.timerForm.setFieldsValue({ endTime: time });
       this.setIntervelTime(time);
     },
-    
+
     validateTimer() {
       if (!!this.intervelTimer) {
         this.intervelTimer.stop();
@@ -109,6 +132,22 @@ export default {
     },
     planeChange(palneId) {
       this.activePlane = palneId;
+      this.refreshSchedule(palneId, false);
+    },
+    refreshSchedule(planeId, fromRoute = false) {
+      this.schedules = [];
+      axios({
+        method: "get",
+        url: "/api/schedule/byPlaneId/" + planeId,
+      }).then((res) => {
+        this.schedules = res.data.data;
+        if (fromRoute) {
+          let schedule = this.$nuxt.$route.params.schedule;
+          this.timerForm.setFieldsValue({ schedule: schedule });
+        } else {
+          this.timerForm.setFieldsValue({ schedule: "" });
+        }
+      });
     },
     setIntervelTime(time) {
       let startTime = this.timerForm.getFieldValue("startTime");
@@ -160,16 +199,18 @@ export default {
   margin-top: 10px;
 }
 
-.ant-time-picker-input[disabled] {
-  background-color: #ffffff;
-  color: rgba(0, 0, 0, 0.75);
-}
 
 .duration-container {
   text-align: center;
   font-size: 38px;
   margin-bottom: 20px;
 }
+
+.ant-time-picker-input[disabled] {
+  background-color: #ffffff;
+  color: rgba(0, 0, 0, 0.75);
+}
+
 
 .schedule-container {
   margin: 20px 0 30px;
@@ -190,6 +231,5 @@ export default {
 }
 .timer-container {
   margin: 0 auto;
-  min-height: 100vh;
 }
 </style>

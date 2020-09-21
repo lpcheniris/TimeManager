@@ -1,10 +1,33 @@
 <template>
-  <div>
-    <nuxt/>
+<div class="main-container">
+    <div class="content">
+      <nuxt/>
+    </div>
+    <Menu> </Menu>
   </div>
-</template>
 
+</template>
+<script>
+import Menu from "../components/menu"
+export default {
+  components: {
+    Menu
+  },
+}
+</script>>
 <style>
+.main-container {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.content {
+  flex: 1;
+  overflow: auto;
+}
+
 html {
   font-family:
     'Source Sans Pro',

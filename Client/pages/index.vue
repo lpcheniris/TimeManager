@@ -1,32 +1,16 @@
 <template>
-  <div>
-    <AddSchedule></AddSchedule>
-    <Timer></Timer>
-    <TimerList></TimerList>
-  </div>
+  <ScheduleList></ScheduleList>
 </template>
 
 <script>
-import Timer from "./timer";
-import TimerList from "./timerList";
-import AddSchedule from "./addSchedule"
+import ScheduleList from "./scheduleList";
 
 export default {
   components: {
-    Timer,
-    TimerList,
-    AddSchedule,
+    ScheduleList,
   },
 };
 </script>
 
 <style>
-.container {
-  margin: 0 auto;
-  min-height: 100vh;
-}
-
-.links {
-  padding-top: 15px;
-}
 </style>

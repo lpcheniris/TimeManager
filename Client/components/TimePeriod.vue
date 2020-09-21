@@ -1,6 +1,6 @@
 <template>
   <div class="time-period-container">
-    <a-radio-group button-style="solid" @change="changeTimePeriod">
+    <a-radio-group :default-value="timePeriods[1]" button-style="solid" @change="changeTimePeriod">
       <a-radio-button
         :key="timePeriod.text"
         v-for="timePeriod in timePeriods"
@@ -30,6 +30,9 @@ export default {
         },
       ]
     };
+  },
+  mounted: function () {
+     this.$emit("initValue", this.timePeriods[1]);
   },
   methods: {
     changeTimePeriod(e) {
