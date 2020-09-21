@@ -5,7 +5,7 @@
         <nuxt-link to="/addSchedule" class="add-schedule-button">+</nuxt-link>
         <div class="add-schedule-button-bg"></div>
       </div>
-      <nuxt-link to="scheduleList" class="menu-button">Schdule List</nuxt-link>
+      <nuxt-link to="/scheduleList" class="menu-button">Schdule List</nuxt-link>
     </section>
 </template>
 
