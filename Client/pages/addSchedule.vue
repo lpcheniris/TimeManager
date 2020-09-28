@@ -74,7 +74,10 @@ export default {
             url: "/api/schedule",
             data: data,
           }).then(() => {
+            this.$message.success("Successfully!");
             this.addScheduleForm.resetFields();
+          }).catch(function (error) {
+            this.$message.error("I'm sorry!");
           });
         }
       });

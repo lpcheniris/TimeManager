@@ -1,6 +1,10 @@
 <template>
   <div class="timer-container">
-    <Plane :defaultPlane="activePlane" @change="planeChange" @initValue="(planeId) => initPlane(planeId)"></Plane>
+    <Plane
+      :defaultPlane="activePlane"
+      @change="planeChange"
+      @initValue="(planeId) => initPlane(planeId)"
+    ></Plane>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
         <a-select
@@ -176,7 +180,10 @@ export default {
             url: "/api/timer",
             data: data,
           }).then(() => {
+            this.$message.success("Successfully!");
             this.timerForm.resetFields();
+          }).catch(function (error) {
+            this.$message.error("I'm sorry!");
           });
         }
       });
@@ -195,10 +202,17 @@ export default {
   width: 100%;
 }
 
+.ant-btn-circle.ant-btn-lg,
+.ant-btn-circle-outline.ant-btn-lg {
+  min-width: 40px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
 .circle-button {
   margin-top: 10px;
 }
-
 
 .duration-container {
   text-align: center;
@@ -210,7 +224,6 @@ export default {
   background-color: #ffffff;
   color: rgba(0, 0, 0, 0.75);
 }
-
 
 .schedule-container {
   margin: 20px 0 30px;
