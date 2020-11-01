@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest",
+    "build-plane": "ts-node ./src/generators/plane/PlaneGenerator.ts"
   },
   "keywords": [
     "timer",

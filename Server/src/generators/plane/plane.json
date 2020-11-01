@@ -1,0 +1,24 @@
+{
+  "plane": [
+    {
+      "name": "Professional Skills",
+      "color": "#AC92EB"
+    },
+    {
+      "name": "Soft Skills",
+      "color": "#4FC1E8"
+    },
+    {
+      "name": "Health",
+      "color": "#A0D568"
+    },
+    {
+      "name": "Enjoy",
+      "color": "#FFCE54"
+    },
+    {
+      "name": "Working",
+      "color": "#ED5564"
+    }
+  ]
+}

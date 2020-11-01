@@ -1,7 +1,7 @@
 import express, { Application } from 'express';
 import bodyParser from "body-parser";
 import { routes } from "./routes";
-import setupMongo from "../src/config/mongo";
+import setupMongo from "./config/mongo";
 
 setupMongo()
 // Boot express
