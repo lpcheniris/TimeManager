@@ -1,3 +1,5 @@
+import mongoose from "mongoose"
+
 import { plane } from "./plane.json"
 import setupMongo from "../../config/mongo";
 import { Plane } from "../../models/Plane"
@@ -13,6 +15,7 @@ async function addPlanes() {
   } catch(e) {
     console.error(e)
   } finally {
+    mongoose.disconnect();
     console.log("Generate Plane Seccefully!")
   }
 }
