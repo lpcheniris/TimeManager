@@ -12,10 +12,11 @@ async function addPlanes() {
     plane.forEach((v) => {
       new Plane(v).save()
     })
+    
   } catch(e) {
     console.error(e)
   } finally {
-    mongoose.disconnect();
+    // mongoose.disconnect();
     console.log("Generate Plane Seccefully!")
   }
 }
