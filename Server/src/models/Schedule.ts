@@ -12,7 +12,7 @@ ScheduleSchema.virtual('restTime', {
   localField: '_id', // Find people where `localField`
   foreignField: 'schedule', // is equal to `foreignField`
   justOne: false,
-  options: { sort: { name: -1 }, limit: 5 } // Query options, see http://bit.ly/mongoose-query-options
+  options: { sort: { name: -1 } } // Query options, see http://bit.ly/mongoose-query-options
 });
 
 ScheduleSchema.set('toObject', { virtuals: true });
