@@ -179,6 +179,8 @@ export default {
         if (!err) {
           let data = {
             ...values,
+            startTime: values.startTime.format("x"),
+            endTime: values.endTime.format("x"),
             durationTime: this.durationTime,
             plane: this.activePlane,
           };
