@@ -156,7 +156,7 @@ export default {
     setIntervelTime(time) {
       let startTime = this.timerForm.getFieldValue("startTime");
       let duration = moment.duration(moment().diff(startTime));
-      this.durationTime = duration.seconds();
+      this.durationTime = duration.seconds()+duration.hours()*60*60+duration.minutes()*60;
       this.durationHours = numeral(duration.hours()).format("00");
       this.durationMinutes = numeral(duration.minutes()).format("00");
       this.durationSeconds = numeral(duration.seconds()).format("00");
@@ -166,6 +166,13 @@ export default {
         this.durationMinutes +
         ":" +
         this.durationSeconds;
+    },
+    resetTimer() {
+      this.durationTime= ""
+      this.durationText= "00:00:00"
+      this.durationHours= 0
+      this.durationMinutes= 0
+      this.durationSeconds= 0
     },
     handleSubmit() {
       this.timerForm.validateFieldsAndScroll((err, values) => {
@@ -182,6 +189,7 @@ export default {
           }).then(() => {
             this.$message.success("Successfully!");
             this.timerForm.resetFields();
+            this.resetTimer()
           }).catch(function (error) {
             this.$message.error("I'm sorry!");
           });
