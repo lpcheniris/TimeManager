@@ -22,6 +22,19 @@
         ]"
         />
       </a-form-item>
+      <a-form-item class="time-picker-container">
+        <a-date-picker
+          :initialValue="moment()"
+          :disabled-date="disabledDate"
+          show-time
+          format="YYYY-MM-DD HH:mm:ss"
+          placeholder="Start Time"
+          v-decorator="[
+          'startTime',
+          { rules: [{ required: true, message: 'Please select your Start Time!' }] },
+        ]"
+        />
+      </a-form-item>
       <div class="submit-container">
         <a-button type="primary" html-type="submit" @click="handleSubmit">Submit</a-button>
       </div>
@@ -31,6 +44,7 @@
 
 <script>
 import axios from "axios";
+import moment from 'moment';
 import Plane from "../components/Plane";
 import TimePeriod from "../components/TimePeriod";
 import { convertTimeTOSeconds } from "../utils/time";
@@ -53,6 +67,11 @@ export default {
     });
   },
   methods: {
+    moment,
+    disabledDate(current) {
+      // Can not select days before today and today
+      return current && current < moment().subtract(1, "day").endOf('day')
+    },
     planeChange(planeId) {
       this.plane = planeId;
     },
@@ -66,6 +85,7 @@ export default {
           let data = {
             duration,
             schedule: values.schedule,
+            startTime: values.startTime.format("x"),
             timePeriod: this.timePeriod,
             plane: this.plane,
           };
