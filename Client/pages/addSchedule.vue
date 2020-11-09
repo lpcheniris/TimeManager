@@ -1,42 +1,62 @@
 <template>
   <div class="add-schedule-container">
-    <Plane @change="planeChange" @initValue="(v) => this.plane = v"></Plane>
-    <TimePeriod @change="timePeriodChange" @initValue="(v) => this.timePeriod = v"></TimePeriod>
+    <Plane @change="planeChange" @initValue="(v) => (this.plane = v)"></Plane>
+    <TimePeriod
+      @change="timePeriodChange"
+      @initValue="(v) => (this.timePeriod = v)"
+    ></TimePeriod>
     <a-form class="form-container" :form="addScheduleForm">
       <a-form-item class="schedule-container">
         <a-input
           id="createSchedule"
           placeholder="Schedule"
-          v-decorator="['schedule', { rules: [{ required: true, message: 'Please input your schedule!'}] }]"
+          v-decorator="[
+            'schedule',
+            {
+              rules: [
+                { required: true, message: 'Please input your schedule!' },
+              ],
+            },
+          ]"
         />
       </a-form-item>
-
       <a-form-item class="time-picker-container">
         <a-time-picker
           placeholder="Duration"
           class="time-picker"
           valueFormat="HH:mm:ss"
           v-decorator="[
-          'duration',
-          { rules: [{ required: true, message: 'Please select your Duration!' }] },
-        ]"
+            'duration',
+            {
+              rules: [
+                { required: true, message: 'Please select your Duration!' },
+              ],
+            },
+          ]"
         />
       </a-form-item>
       <a-form-item class="time-picker-container">
         <a-date-picker
-          :initialValue="moment()"
+          class="time-picker"
           :disabled-date="disabledDate"
           show-time
           format="YYYY-MM-DD HH:mm:ss"
           placeholder="Start Time"
           v-decorator="[
-          'startTime',
-          { rules: [{ required: true, message: 'Please select your Start Time!' }] },
-        ]"
+            'startTime',
+            {
+              rules: [
+                { required: true, message: 'Please select your Start Time!' },
+              ],
+              initialValue: moment(),
+            },
+          ]"
         />
       </a-form-item>
       <div class="submit-container">
-        <a-button type="primary" html-type="submit" @click="handleSubmit">Submit</a-button>
+        <a-button type="primary" html-type="submit" @click="handleSubmit"
+          >Submit</a-button
+        >
       </div>
     </a-form>
   </div>
@@ -44,7 +64,7 @@
 
 <script>
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 import Plane from "../components/Plane";
 import TimePeriod from "../components/TimePeriod";
 import { convertTimeTOSeconds } from "../utils/time";
@@ -70,7 +90,7 @@ export default {
     moment,
     disabledDate(current) {
       // Can not select days before today and today
-      return current && current < moment().subtract(1, "day").endOf('day')
+      return current && current < moment().subtract(1, "day").endOf("day");
     },
     planeChange(planeId) {
       this.plane = planeId;
@@ -93,12 +113,14 @@ export default {
             method: "post",
             url: "/api/schedule",
             data: data,
-          }).then(() => {
-            this.$message.success("Successfully!");
-            this.addScheduleForm.resetFields();
-          }).catch(function (error) {
-            this.$message.error("I'm sorry!");
-          });
+          })
+            .then(() => {
+              this.$message.success("Successfully!");
+              this.addScheduleForm.resetFields();
+            })
+            .catch(function (error) {
+              this.$message.error("I'm sorry!");
+            });
         }
       });
     },
@@ -107,7 +129,6 @@ export default {
 </script>
 
 <style>
-
 .ant-time-picker-input[disabled] {
   background-color: #ffffff;
   color: rgba(0, 0, 0, 0.75);

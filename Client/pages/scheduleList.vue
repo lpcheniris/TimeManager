@@ -4,42 +4,44 @@
       :key="schedule._id"
       v-for="schedule in schedules"
       class="schedule-item-container"
-      :style="{'border-color': schedule.plane.color}"
+      :style="{ 'border-color': schedule.plane.color }"
     >
-    <nuxt-link :to="'timer/'+schedule.plane._id + '/'+schedule._id">
-      <div class="list-title">
-        <div class="plane-name">
-          <div class="plane-name-block" :style="{'background': schedule.plane.color}"></div>
-          <div>{{schedule.plane.name}}</div>
+      <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
+        <div class="list-title">
+          <div class="plane-name">
+            <div
+              class="plane-name-block"
+              :style="{ background: schedule.plane.color }"
+            ></div>
+            <div>{{ schedule.plane.name }}</div>
+          </div>
+          <div class="time-period" :style="{ color: schedule.plane.color }">
+            {{ schedule.timePeriod.text }}
+          </div>
         </div>
-        <div
-          class="time-period"
-          :style="{'color': schedule.plane.color}"
-        >{{schedule.timePeriod.text}}</div>
-      </div>
-      <div class="list-content">
-        <div class="time-content">
-          <section>{{schedule.schedule}}</section>
-          <section class="rest-time" :style="{'color': schedule.plane.color}">
-            Rest Time:
-            <label>{{schedule | convertRestTime}}</label>
-          </section>
+        <div class="list-content">
+          <div class="time-content">
+            <section>{{ schedule.schedule }}</section>
+            <section class="rest-time" :style="{ color: schedule.plane.color }">
+              Rest Time:
+              <label>{{ schedule | convertRestTime }}</label>
+            </section>
+          </div>
+          <div class="time-content">
+            <section>
+              Total Time:
+              <label>{{ schedule.duration | convertSecondsTOTime }}</label>
+            </section>
+            <section>
+              Done Time:
+              <label>{{ schedule | convertCompletedTime }}</label>
+            </section>
+          </div>
+          <div>
+            Start Time:{{schedule.startTime | formatStartTime}}
+          </div>
         </div>
-        <div class="time-content">
-          <section>
-            Total Time:
-            <label>{{ schedule.duration | convertSecondsTOTime}}</label>
-          </section>
-          <section>
-            Done Time:
-            <label>{{schedule | convertCompletedTime}}</label>
-          </section>
-        </div>
-     
-     
-     
-      </div>
-    </nuxt-link>
+      </nuxt-link>
     </div>
   </div>
 </template>
@@ -78,11 +80,14 @@ export default {
     },
     convertCompletedTime(schedule) {
       let totalSeconds = 0;
-      schedule.restTime.forEach((v)=> {
+      schedule.restTime.forEach((v) => {
         totalSeconds = totalSeconds + v.durationTime;
-      })
+      });
       return convertSecondsTOTime(totalSeconds);
-    } 
+    },
+    formatStartTime(time) {
+      return moment(time).format("YYYY-MM-DD hh:mm:ss")
+    }
   },
 };
 </script>
