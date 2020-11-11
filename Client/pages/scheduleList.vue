@@ -14,6 +14,15 @@
               :style="{ background: schedule.plane.color }"
             ></div>
             <div>{{ schedule.plane.name }}</div>
+            <div>
+              <a-icon
+                class="done-icon"
+                type="check-circle"
+                theme="twoTone"
+                two-tone-color="#52c41a"
+                v-if="schedule.duration <= countRestTime(schedule.restTime)"
+              />
+            </div>
           </div>
           <div class="time-period" :style="{ color: schedule.plane.color }">
             {{ schedule.timePeriod.text }}
@@ -103,6 +112,10 @@ export default {
 </script>
 
 <style>
+.done-icon {
+  font-size: 24px;
+  margin-left: 10px;
+}
 .time-content {
   display: flex;
   justify-content: space-between;
