@@ -23,23 +23,25 @@
           <div class="time-content">
             <section>{{ schedule.schedule }}</section>
             <section class="rest-time" :style="{ color: schedule.plane.color }">
-              Rest Time:
-              <label>{{ schedule | convertRestTime }}</label>
+              {{
+                schedule.duration > countRestTime(schedule.restTime)
+                  ? "Rest Time:"
+                  : "Exceed:"
+              }}
+              <label>{{ convertRestTime(schedule) }}</label>
             </section>
           </div>
           <div class="time-content">
             <section>
               Total Time:
-              <label>{{ schedule.duration | convertSecondsTOTime }}</label>
+              <label>{{ convertTotalTime(schedule.duration) }}</label>
             </section>
             <section>
               Done Time:
-              <label>{{ schedule | convertCompletedTime }}</label>
+              <label>{{ convertCompletedTime(schedule) }}</label>
             </section>
           </div>
-          <div>
-            Start Time:{{schedule.startTime | formatStartTime}}
-          </div>
+          <div>Start Time:{{ formatStartTime(schedule.startTime) }}</div>
         </div>
       </nuxt-link>
     </div>
@@ -67,16 +69,24 @@ export default {
       this.schedules = res.data.data;
     });
   },
-  filters: {
-    convertSecondsTOTime(time) {
+  methods: {
+    countRestTime(list) {
+      let totalSeconds = 0;
+      list.forEach((v) => {
+        totalSeconds = totalSeconds + v.durationTime;
+      });
+      return totalSeconds;
+    },
+    convertTotalTime(time) {
       return convertSecondsTOTime(time);
     },
     convertRestTime(schedule) {
-      let totalSeconds = 0;
-      schedule.restTime.forEach((v) => {
-        totalSeconds = totalSeconds + v.durationTime;
-      });
-      return convertSecondsTOTime(schedule.duration - totalSeconds);
+      let totalSeconds = this.countRestTime(schedule.restTime);
+      if (schedule.duration > totalSeconds) {
+        return convertSecondsTOTime(schedule.duration - totalSeconds);
+      } else {
+        return convertSecondsTOTime(totalSeconds - schedule.duration);
+      }
     },
     convertCompletedTime(schedule) {
       let totalSeconds = 0;
@@ -86,8 +96,8 @@ export default {
       return convertSecondsTOTime(totalSeconds);
     },
     formatStartTime(time) {
-      return moment(time).format("YYYY-MM-DD hh:mm:ss")
-    }
+      return moment(time).format("YYYY-MM-DD hh:mm:ss");
+    },
   },
 };
 </script>
