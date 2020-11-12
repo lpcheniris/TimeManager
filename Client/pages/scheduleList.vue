@@ -1,58 +1,62 @@
 <template>
   <div>
-    <div
-      :key="schedule._id"
-      v-for="schedule in schedules"
-      class="schedule-item-container"
-      :style="{ 'border-color': schedule.plane.color }"
-    >
-      <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
-        <div class="list-title">
-          <div class="plane-name">
-            <div
-              class="plane-name-block"
-              :style="{ background: schedule.plane.color }"
-            ></div>
-            <div>{{ schedule.plane.name }}</div>
-            <div>
-              <a-icon
-                class="done-icon"
-                type="check-circle"
-                theme="twoTone"
-                two-tone-color="#52c41a"
-                v-if="schedule.duration <= countRestTime(schedule.restTime)"
-              />
+    <div :key="schedule._id" v-for="schedule in schedules">
+      <div
+        class="schedule-item-container"
+        :style="{ 'border-color': schedule.plane.color }"
+        v-if="schedule.duration > countRestTime(schedule.restTime)"
+      >
+        <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
+          <div class="list-title">
+            <div class="plane-name">
+              <div
+                class="plane-name-block"
+                :style="{ background: schedule.plane.color }"
+              ></div>
+              <div>{{ schedule.plane.name }}</div>
+              <div>
+                <a-icon
+                  class="done-icon"
+                  type="check-circle"
+                  theme="twoTone"
+                  two-tone-color="#52c41a"
+                  v-if="schedule.duration <= countRestTime(schedule.restTime)"
+                />
+              </div>
+            </div>
+            <div class="time-period" :style="{ color: schedule.plane.color }">
+              {{ schedule.timePeriod.text }}
             </div>
           </div>
-          <div class="time-period" :style="{ color: schedule.plane.color }">
-            {{ schedule.timePeriod.text }}
+          <div class="list-content">
+            <div class="time-content">
+              <section>{{ schedule.schedule }}</section>
+              <section
+                class="rest-time"
+                :style="{ color: schedule.plane.color }"
+              >
+                {{
+                  schedule.duration > countRestTime(schedule.restTime)
+                    ? "Rest Time:"
+                    : "Exceed:"
+                }}
+                <label>{{ convertRestTime(schedule) }}</label>
+              </section>
+            </div>
+            <div class="time-content">
+              <section>
+                Total Time:
+                <label>{{ convertTotalTime(schedule.duration) }}</label>
+              </section>
+              <section>
+                Done Time:
+                <label>{{ convertCompletedTime(schedule) }}</label>
+              </section>
+            </div>
+            <div>Start Time:{{ formatStartTime(schedule.startTime) }}</div>
           </div>
-        </div>
-        <div class="list-content">
-          <div class="time-content">
-            <section>{{ schedule.schedule }}</section>
-            <section class="rest-time" :style="{ color: schedule.plane.color }">
-              {{
-                schedule.duration > countRestTime(schedule.restTime)
-                  ? "Rest Time:"
-                  : "Exceed:"
-              }}
-              <label>{{ convertRestTime(schedule) }}</label>
-            </section>
-          </div>
-          <div class="time-content">
-            <section>
-              Total Time:
-              <label>{{ convertTotalTime(schedule.duration) }}</label>
-            </section>
-            <section>
-              Done Time:
-              <label>{{ convertCompletedTime(schedule) }}</label>
-            </section>
-          </div>
-          <div>Start Time:{{ formatStartTime(schedule.startTime) }}</div>
-        </div>
-      </nuxt-link>
+        </nuxt-link>
+      </div>
     </div>
   </div>
 </template>
