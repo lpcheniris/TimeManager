@@ -8,6 +8,7 @@
     "build": "tsc",
     "test": "jest",
     "build-plane": "ts-node ./src/generators/plane/PlaneGenerator.ts",
+    "build-task": "ts-node ./src/generators/task/TaskGenerator.ts",
     "clear-data": "ts-node ./src/utils/ResetupDB.ts"
   },
   "keywords": [
