@@ -4,13 +4,17 @@ import { IndexController } from "./controllers/IndexController";
 import { PlaneController } from './controllers/PlaneController';
 import { ScheduleController } from './controllers/ScheduleController';
 import { PublicController } from './controllers/PublicController';
+import { TaskController } from './controllers/TaskController';
+import { TaskCalendarController } from './controllers/TaskCalendarController';
+
 
 const _routes: [string, Router][] = [
     ['/', IndexController],
     ['/timer', TimerController],
     ['/plane', PlaneController],
     ['/schedule', ScheduleController],
-    ['/public', PublicController]
+    ['/task', TaskController],
+    ['/taskCalendar', TaskCalendarController]
 ];
 
 export const routes = (app: Application) => {
