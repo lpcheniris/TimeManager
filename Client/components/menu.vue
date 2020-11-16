@@ -1,6 +1,6 @@
 <template>
     <section class="menu-container">
-      <nuxt-link to="/timer" class="menu-button">Add Timer</nuxt-link>
+      <nuxt-link to="/taskcalendar" class="menu-button">Task Calendar</nuxt-link>
       <div class="add-schedule-button-container">
         <nuxt-link to="/addSchedule" class="add-schedule-button">+</nuxt-link>
         <div class="add-schedule-button-bg"></div>
