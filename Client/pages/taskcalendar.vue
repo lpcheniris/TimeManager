@@ -12,7 +12,7 @@
     </a-checkbox-group>
 
     <div class="button-container">
-      <a-button type="primary" html-type="submit" @click="handleSubmit"
+      <a-button :disabled="!isModify"  type="primary" html-type="submit" @click="handleSubmit"
         >Submit</a-button
       >
     </div>
@@ -33,6 +33,7 @@ export default {
       today: moment().format("YYYY-MM-DD"),
       tasks: [],
       taskisDone: [],
+      isModify: false
     };
   },
   mounted: function () {
@@ -42,11 +43,18 @@ export default {
     }).then((res) => {
       this.tasks = res.data.data;
     });
+    axios({
+      method: "get",
+      url: "/api/taskcalendar/byDate/"+ moment(this.today).format("x"),
+    }).then((res) => {
+      this.taskisDone = res.data.data.tasks;
+    });
   },
 
   methods: {
     onChange(checkedValues) {
       this.taskisDone = checkedValues;
+      this.isModify = true
     },
     handleSubmit() {
       axios({
@@ -58,7 +66,6 @@ export default {
         },
       })
         .then(() => {
-          this.taskisDone = [];
           this.$message.success("Successfully!");
           this.addScheduleForm.resetFields();
         })

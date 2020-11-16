@@ -1,10 +1,8 @@
 import mongoose from "mongoose"
-import { Task } from "./Task"
 
 const TaskCalendarSchema = new mongoose.Schema({
-  task: { type: mongoose.Schema.Types.ObjectId, ref: Task,required: true },
-  date: { type: mongoose.Schema.Types.Date, required: true},
-  isDone: {type: mongoose.Schema.Types.Boolean, required: true}
+  tasks: { type: [mongoose.Schema.Types.ObjectId], required: true },
+  date: { type: mongoose.Schema.Types.Date, required: true, unique: true},
 })
 
 export const TaskCalendar = mongoose.model("TaskCalendar", TaskCalendarSchema)
