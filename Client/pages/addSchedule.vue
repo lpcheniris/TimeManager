@@ -51,7 +51,7 @@
               rules: [
                 { required: true, message: 'Please select your Start Time!' },
               ],
-              initialValue: moment(),
+              initialValue: moment().add(1, 'days').startOf('day'),
             },
           ]"
         />
