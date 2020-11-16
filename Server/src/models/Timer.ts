@@ -6,7 +6,8 @@ const TimerSchema = new mongoose.Schema({
   endTime: { type: Date, required: true },
   startTime: { type: Date, required: true },
   plane: { type: mongoose.Schema.Types.ObjectId, ref: Plane, required: true },
-  schedule: { type: mongoose.Schema.Types.ObjectId, ref: Schedule, required: true}
+  schedule: { type: mongoose.Schema.Types.ObjectId, ref: Schedule, required: true},
+  comment: { type: String }
 })
 
 export const Timer = mongoose.model("Timer", TimerSchema)

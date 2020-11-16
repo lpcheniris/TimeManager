@@ -18,6 +18,13 @@
           >{{schedule.schedule}}</a-select-option>
         </a-select>
       </a-form-item>
+      <a-form-item>
+        <a-input
+        placeholder="Comment"
+        v-decorator="['comment', 
+        { rules: [{ required: true, message: 'Please input your Comment!'}] }]"
+        />
+      </a-form-item>
 
       <a-form-item class="time-picker-container">
         <a-time-picker
