@@ -53,7 +53,8 @@
                 <label>{{ convertCompletedTime(schedule) }}</label>
               </section>
             </div>
-            <div>Start Time:{{ formatStartTime(schedule.startTime) }}</div>
+            <div>Start Time: {{ formatStartTime(schedule.startTime) }}</div>
+            <div>End Time: {{ formatEndTime(schedule) }}</div>
           </div>
         </nuxt-link>
       </div>
@@ -104,13 +105,17 @@ export default {
     convertCompletedTime(schedule) {
       let totalSeconds = 0;
       schedule.restTime.forEach((v) => {
-        totalSeconds = totalSeconds + v.durationTime;
+        totalSeconds = totalSeconds + v.durationTime
       });
-      return convertSecondsTOTime(totalSeconds);
+      return convertSecondsTOTime(totalSeconds)
     },
     formatStartTime(time) {
-      return moment(time).format("YYYY-MM-DD hh:mm:ss");
+      return moment(time).format("YYYY-MM-DD HH:mm:ss")
     },
+    formatEndTime(schedule) {
+
+      return moment(schedule.startTime).add(schedule.timePeriod.seconds, "seconds").format("YYYY-MM-DD HH:mm:ss")
+    }
   },
 };
 </script>
