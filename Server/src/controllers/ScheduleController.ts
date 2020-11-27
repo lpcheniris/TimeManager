@@ -41,4 +41,13 @@ ScheduleController.get('/byPlaneId/:planeId', async (req: Request, res: Response
   }
 })
 
+ScheduleController.put('/:scheduleID', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let data = await Schedule.findOneAndUpdate({_id: req.params.scheduleID}, {isDone: true})
+    res.send({ data: data })
+  } catch (err) {
+    next(err)
+  }
+})
+
 

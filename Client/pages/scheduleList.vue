@@ -4,7 +4,7 @@
       <div
         class="schedule-item-container"
         :style="{ 'border-color': schedule.plane.color }"
-        v-if="schedule.duration > countRestTime(schedule.restTime)"
+        v-if="!schedule.isDone"
       >
         <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
           <div class="list-title">
@@ -53,8 +53,20 @@
                 <label>{{ convertCompletedTime(schedule) }}</label>
               </section>
             </div>
-            <div>Start Time: {{ formatStartTime(schedule.startTime) }}</div>
-            <div>End Time: {{ formatEndTime(schedule) }}</div>
+            <section class="foot-section">
+              <div>
+                <div>Start Time: {{ formatStartTime(schedule.startTime) }}</div>
+                <div>End Time: {{ formatEndTime(schedule) }}</div>
+              </div>
+              <div>
+                <a-button
+                  type="primary"
+                  html-type="submit"
+                  v-on:click="handleDone(schedule._id, $event)"
+                  >Done</a-button
+                >
+              </div>
+            </section>
           </div>
         </nuxt-link>
       </div>
@@ -84,6 +96,14 @@ export default {
     });
   },
   methods: {
+    loadSechedules() {
+      axios({
+      method: "get",
+      url: "/api/schedule/",
+    }).then((res) => {
+      this.schedules = res.data.data;
+    });
+    },
     countRestTime(list) {
       let totalSeconds = 0;
       list.forEach((v) => {
@@ -105,22 +125,39 @@ export default {
     convertCompletedTime(schedule) {
       let totalSeconds = 0;
       schedule.restTime.forEach((v) => {
-        totalSeconds = totalSeconds + v.durationTime
+        totalSeconds = totalSeconds + v.durationTime;
       });
-      return convertSecondsTOTime(totalSeconds)
+      return convertSecondsTOTime(totalSeconds);
     },
     formatStartTime(time) {
-      return moment(time).format("YYYY-MM-DD HH:mm:ss")
+      return moment(time).format("YYYY-MM-DD HH:mm:ss");
     },
     formatEndTime(schedule) {
-
-      return moment(schedule.startTime).add(schedule.timePeriod.seconds, "seconds").format("YYYY-MM-DD HH:mm:ss")
+      return moment(schedule.startTime)
+        .add(schedule.timePeriod.seconds, "seconds")
+        .format("YYYY-MM-DD HH:mm:ss");
+    },
+    handleDone(scheduleID, event) {
+      event.preventDefault()
+      axios({
+      method: "put",
+      url: "/api/schedule/"+scheduleID,
+    }).then((res) => {
+      this.$message.success("Successfully!");
+      this.loadSechedules()
+    });
     }
   },
 };
 </script>
 
 <style>
+.foot-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
 .done-icon {
   font-size: 24px;
   margin-left: 10px;
