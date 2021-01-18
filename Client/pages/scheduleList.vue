@@ -4,7 +4,6 @@
       <div
         class="schedule-item-container"
         :style="{ 'border-color': schedule.plane.color }"
-        v-if="!schedule.isDone"
       >
         <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
           <div class="list-title">
@@ -29,8 +28,8 @@
             </div>
           </div>
           <div class="list-content">
+            <h4 class="schedule-name">{{ schedule.schedule }}</h4>
             <div class="time-content">
-              <section>{{ schedule.schedule }}</section>
               <section
                 class="rest-time"
                 :style="{ color: schedule.plane.color }"
@@ -58,15 +57,24 @@
                 <div>Start Time: {{ formatStartTime(schedule.startTime) }}</div>
                 <div>End Time: {{ formatEndTime(schedule) }}</div>
               </div>
-              <div>
-                <a-button
-                  type="primary"
-                  html-type="submit"
-                  v-on:click="handleDone(schedule._id, $event)"
-                  >Done</a-button
-                >
-              </div>
             </section>
+            <div class="handler-wrapper">
+              <a-button
+                type="primary"
+                html-type="submit"
+                shape="round"
+                v-on:click="handleDone(schedule._id, $event)"
+                >Done</a-button
+              >
+              <a-button
+                type="primary"
+                html-type="submit"
+                shape="round"
+                v-on:click="handleAddTime(schedule._id, $event)"
+                >Add Time</a-button
+              >
+              
+            </div>
           </div>
         </nuxt-link>
       </div>
@@ -88,21 +96,17 @@ export default {
   },
 
   mounted: function () {
-    axios({
-      method: "get",
-      url: "/api/schedule/",
-    }).then((res) => {
-      this.schedules = res.data.data;
-    });
+    this.loadSechedules();
   },
   methods: {
     loadSechedules() {
+      console.log("ok");
       axios({
-      method: "get",
-      url: "/api/schedule/",
-    }).then((res) => {
-      this.schedules = res.data.data;
-    });
+        method: "get",
+        url: "/api/schedule/",
+      }).then((res) => {
+        this.schedules = res.data.data;
+      });
     },
     countRestTime(list) {
       let totalSeconds = 0;
@@ -138,20 +142,41 @@ export default {
         .format("YYYY-MM-DD HH:mm:ss");
     },
     handleDone(scheduleID, event) {
-      event.preventDefault()
-      axios({
-      method: "put",
-      url: "/api/schedule/"+scheduleID,
-    }).then((res) => {
-      this.$message.success("Successfully!");
-      this.loadSechedules()
-    });
+      event.preventDefault();
+      this.$confirm({
+        title: "Do you Want to done the schedule?",
+        onOk() {
+          axios({
+            method: "put",
+            url: "/api/schedule/" + scheduleID,
+          }).then((res) => {
+            this.$message.success("Successfully!");
+            this.loadSechedules();
+          });
+        },
+      });
+    },
+    handleAddTime(scheduleId, event) {
+      event.preventDefault();
+      this.$router.push("/")
     }
   },
 };
 </script>
 
 <style>
+.ant-modal-confirm .ant-modal-confirm-btns {
+  float: none;
+  text-align: center;
+}
+
+.handler-wrapper {
+  padding-top: 10px;
+}
+.schedule-name {
+  font-size: 14px;
+}
+
 .foot-section {
   display: flex;
   flex-direction: row;

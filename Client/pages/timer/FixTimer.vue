@@ -1,10 +1,5 @@
 <template>
   <div class="timer-container">
-    <Plane
-      :defaultPlane="activePlane"
-      @change="planeChange"
-      @initValue="(planeId) => initPlane(planeId)"
-    ></Plane>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
         <a-select
@@ -76,13 +71,10 @@ import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
 import axios from "axios";
-import Plane from "../../../components/Plane";
+import Plane from "../../components/Plane";
 
 export default {
-  name: "Timer",
-  components: {
-    Plane,
-  },
+  name: "FixTimer",
   data() {
     return {
       intervelTimer: "",
