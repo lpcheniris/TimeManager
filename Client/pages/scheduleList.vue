@@ -5,7 +5,7 @@
         class="schedule-item-container"
         :style="{ 'border-color': schedule.plane.color }"
       >
-        <nuxt-link :to="'timer/' + schedule.plane._id + '/' + schedule._id">
+        <nuxt-link :to="'addtimer/' + schedule.plane._id +'/' + schedule._id">
           <div class="list-title">
             <div class="plane-name">
               <div
@@ -70,7 +70,7 @@
                 type="primary"
                 html-type="submit"
                 shape="round"
-                v-on:click="handleAddTime(schedule._id, $event)"
+                v-on:click="handleFixTime(schedule._id, $event)"
                 >Add Time</a-button
               >
               
@@ -156,9 +156,9 @@ export default {
         },
       });
     },
-    handleAddTime(scheduleId, event) {
+    handleFixTime(scheduleId, event) {
       event.preventDefault();
-      this.$router.push("/")
+      this.$router.push("/fixtimer/"+scheduleId)
     }
   },
 };
