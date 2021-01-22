@@ -26,6 +26,7 @@ export default {
 .content {
   flex: 1;
   overflow: auto;
+  padding-bottom: 40px;
 }
 
 html {
