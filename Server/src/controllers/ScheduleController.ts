@@ -50,4 +50,13 @@ ScheduleController.put('/:scheduleID', async (req: Request, res: Response, next:
   }
 })
 
+ScheduleController.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    let data = await Schedule.findOne({ _id: req.params.id })
+    res.send({ data: data })
+  } catch (err) {
+    next(err)
+  }
+})
+
 

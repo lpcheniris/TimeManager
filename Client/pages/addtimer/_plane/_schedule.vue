@@ -29,6 +29,9 @@
       <a-form-item class="time-picker-container">
         <a-time-picker
           class="time-picker"
+          :minuteStep=10
+          :secondStep=30
+          :default-open-value="moment('00:00:00', 'HH:mm:ss')"
           disabled
           v-decorator="[
           'startTime',
@@ -47,6 +50,9 @@
       <a-form-item class="time-picker-container">
         <a-time-picker
           class="time-picker"
+          :minuteStep=10
+          :secondStep=30
+          :default-open-value="moment('00:00:00', 'HH:mm:ss')"
           disabled
           v-decorator="[
           'endTime',
@@ -106,6 +112,7 @@ export default {
     }
   },
   methods: {
+    moment,
     initPlane(planeId) {
       if (!!this.activePlane) {
         if (!!this.$nuxt.$route.params.schedule) {
