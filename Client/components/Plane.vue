@@ -77,7 +77,7 @@ export default {
 
 .plane-item {
   flex: 1;
-  margin: 10px;
+  margin: 10px 0;
   align-items: center;
   display: flex;
   flex-wrap: wrap;
@@ -87,6 +87,7 @@ export default {
 
 .plane-container {
   margin-top: 10px;
+  padding: 0 10px;
   display: flex;
   justify-content: space-around;
   height: 135px;
