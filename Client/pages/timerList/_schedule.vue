@@ -1,11 +1,17 @@
 <template>
   <div class="timerlist-container">
-    <div class="schedule-title" v-if="timers.length > 0">
+    <div class="schedule-title-wrraper">
+      <div class="schedule-title" v-if="timers.length > 0">
       <div
         class="schedule-name-block"
         :style="{ background: timers[0].plane.color }"
       ></div>
       {{ timers[0].schedule.schedule }}
+    </div>
+    <div class="icon-wrraper" @click="handleShowDuration">
+          <a-icon type="up-circle" v-show="isShowDuration"/>
+          <a-icon type="down-circle" v-show="!isShowDuration"/>
+          </div>
     </div>
     <div
       :key="timer._id"
@@ -13,16 +19,17 @@
       class="timer-item-container"
       :style="{ 'border-color': timer.plane.color }"
     >
-      <div class="plane-name">
+      <div :class="['plane-name', isShowDuration ? 'plane-name-bottom' : null]">
         <div>{{ timer.comment }}</div>
       </div>
-      <p>{{ timer.scheduleule }}</p>
-      <p class="duration">{{ transferDuration(timer.durationTime) }}</p>
-      <p>
-        {{
-          transferTime(timer.startTime) + " to " + transferTime(timer.endTime)
-        }}
-      </p>
+      <div class="duration-wrraper" v-show="isShowDuration">
+        <p class="duration">{{ transferDuration(timer.durationTime) }}</p>
+        <p>
+          {{
+            transferTime(timer.startTime) + " to " + transferTime(timer.endTime)
+          }}
+        </p>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +44,7 @@ export default {
   data() {
     return {
       timers: [],
+      isShowDuration: false
     };
   },
 
@@ -59,19 +67,34 @@ export default {
     transferTime(time) {
       return moment(time).format("YY-MM-DD HH:mm:ss");
     },
+    handleShowDuration() {
+      this.isShowDuration = !this.isShowDuration
+    }
   },
 };
 </script>
 
 <style>
+.icon-wrraper {
+  width: 50px;
+  font-size: 28px;
+}
+.schedule-title-wrraper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  padding: 10px;
+  border-bottom: solid 1px;
+}
+
 .schedule-title {
+  flex: 1;
   font-size: 24px;
   text-align: center;
-  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-bottom: solid 1px;
+  
 }
 
 .duration {
@@ -84,12 +107,15 @@ export default {
   border-radius: 10px;
   margin-right: 8px;
 }
+.plane-name-bottom {
+  border-bottom: solid 1px #aaa;
+}
 .timer-item-container > .plane-name {
   color: 14px;
   display: flex;
   font-weight: bold;
   padding: 10px;
-  border-bottom: solid 1px #aaa;
+  
 }
 .timer-item-container p {
   margin: 10px 15px;
