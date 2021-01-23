@@ -1,18 +1,28 @@
 <template>
   <div class="timerlist-container">
+    <div class="schedule-title" v-if="timers.length > 0">
+      <div
+        class="schedule-name-block"
+        :style="{ background: timers[0].plane.color }"
+      ></div>
+      {{ timers[0].schedule.schedule }}
+    </div>
     <div
       :key="timer._id"
       v-for="timer in timers"
       class="timer-item-container"
-      :style="{'border-color': timer.plane.color}"
+      :style="{ 'border-color': timer.plane.color }"
     >
       <div class="plane-name">
-        <div class="plane-name-block" :style="{'background': timer.plane.color}"></div>
-        <div>{{timer.plane.name}}</div>
+        <div>{{ timer.comment }}</div>
       </div>
-      <p>{{timer.scheduleule}}</p>
-      <p class="duration">{{transferDuration(timer.durationTime)}}</p>
-      <p>{{transferTime(timer.startTime) + " -- "+ transferTime(timer.endTime)}}</p>
+      <p>{{ timer.scheduleule }}</p>
+      <p class="duration">{{ transferDuration(timer.durationTime) }}</p>
+      <p>
+        {{
+          transferTime(timer.startTime) + " to " + transferTime(timer.endTime)
+        }}
+      </p>
     </div>
   </div>
 </template>
@@ -33,7 +43,7 @@ export default {
   mounted: function () {
     axios({
       method: "get",
-      url: "/api/timer/",
+      url: "/api/timer/BySchedule/" + this.$nuxt.$route.params.schedule,
     }).then((res) => {
       this.timers = res.data.data;
     });
@@ -54,10 +64,20 @@ export default {
 </script>
 
 <style>
+.schedule-title {
+  font-size: 24px;
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px;
+}
+
 .duration {
   font-weight: bold;
 }
-.plane-name-block {
+.schedule-name-block {
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -79,5 +99,4 @@ export default {
   margin: 20px;
   border-radius: 5px;
 }
-
 </style>

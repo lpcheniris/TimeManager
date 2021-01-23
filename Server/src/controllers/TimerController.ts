@@ -31,3 +31,24 @@ TimerController.delete("/:id", async (req: Request, res: Response, next: NextFun
         next(err)
       }
 })
+
+TimerController.get('/BySchedule/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await Timer.find({schedule: req.params.id}).populate({path: "schedule", select: "schedule"}).populate({path: "plane"}).exec()
+    res.send({ data: data })
+  } catch (err) {
+    next(err)
+  }
+})
+
+TimerController.get('/length/:id', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await Timer.find({schedule: req.params.id}).exec()
+    res.send({ dataSize: data.length })
+  } catch (err) {
+    next(err)
+  }
+})
+
+
+

@@ -1,5 +1,12 @@
 <template>
   <div class="timer-container">
+    <div class="plane-title" v-if="schedule.plane">
+      <div
+        class="plane-name-block"
+        :style="{ background: schedule.plane.color }"
+      ></div>
+      {{ schedule.plane.name }}
+    </div>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
         <a-input
@@ -180,6 +187,24 @@ export default {
 </script>
 
 <style>
+.plane-title {
+  font-size: 24px;
+  text-align: center;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 1px;
+}
+
+.schedule-name-block {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  margin-right: 8px;
+}
+
 .submit-container {
   display: flex;
   justify-content: center;

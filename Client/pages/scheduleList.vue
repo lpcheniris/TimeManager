@@ -73,6 +73,12 @@
                 v-on:click="handleFixTime(schedule._id, $event)"
                 >Add Time</a-button
               >
+               <a-button
+                type="primary"
+                shape="round"
+                v-on:click="handleShowTimer(schedule._id, $event)"
+                >Show Timer</a-button
+              >
               
             </div>
           </div>
@@ -159,6 +165,19 @@ export default {
     handleFixTime(scheduleId, event) {
       event.preventDefault();
       this.$router.push("/fixtimer/"+scheduleId)
+    },
+    handleShowTimer(scheduleId, event) {
+      event.preventDefault();
+       axios({
+            method: "get",
+            url: "/api/timer/length/" + scheduleId,
+          }).then((res) => {
+            if(res.data.dataSize == 0) {
+              this.$message.success("No Data!");
+            } else {
+               this.$router.push("/timerList/"+scheduleId)
+            }
+        });
     }
   },
 };
@@ -172,6 +191,9 @@ export default {
 
 .handler-wrapper {
   padding-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .schedule-name {
   font-size: 14px;
