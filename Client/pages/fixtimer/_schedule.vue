@@ -161,6 +161,7 @@ export default {
         if (!err) {
           let data = {
             ...values,
+            schedule: this.schedule.id,
             startTime: values.startTime.format("x"),
             endTime: values.endTime.format("x"),
             durationTime: this.durationTime,
