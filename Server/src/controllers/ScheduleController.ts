@@ -1,11 +1,24 @@
 import { NextFunction, Request, Response, Router } from 'express';
+import { check, validationResult } from "express-validator" 
 
 import { Schedule } from "../models/Schedule"
 
 export const ScheduleController: Router = Router();
 
-ScheduleController.post('/', async (req: Request, res: Response, next: NextFunction) => {
+ScheduleController.post('/', 
+check("schedule").custom((value) => {
+  return Schedule.findOne({schedule: value}).then(schedule => {
+    if (schedule) {
+      return Promise.reject('Schedule already in use');
+    }
+  });
+}),
+async (req: Request, res: Response, next: NextFunction) => {
   let schedule = req.body;
+  const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(500).json({ errors: errors.array() });
+    }
   try {
     const ScheduleModel = await new Schedule(schedule).save()
     res.send({ id: ScheduleModel._id });

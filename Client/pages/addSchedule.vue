@@ -102,6 +102,7 @@ export default {
       this.timePeriod = timePeriod;
     },
     handleSubmit() {
+      const _this = this
       this.addScheduleForm.validateFieldsAndScroll((err, values) => {
         let duration = convertTimeTOSeconds(values.duration);
         if (!err) {
@@ -122,7 +123,7 @@ export default {
               this.addScheduleForm.resetFields();
             })
             .catch(function (error) {
-              this.$message.error("I'm sorry!");
+              _this.$message.error(error.response.data.errors[0].msg);
             });
         }
       });
