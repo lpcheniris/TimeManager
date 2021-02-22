@@ -1,6 +1,6 @@
 <template>
   <div class="time-period-container">
-    <a-radio-group :default-value="timePeriods[1]" button-style="solid" @change="changeTimePeriod">
+    <a-radio-group :default-value="timePeriods[this.period]" button-style="solid" @change="changeTimePeriod">
       <a-radio-button
         :key="timePeriod.text"
         v-for="timePeriod in timePeriods"
@@ -11,8 +11,10 @@
 </template>
 
 <script>
+import {isNumber} from "lodash"
 export default {
   name: "TimePeriod",
+  props: ["defaultPeriodIndex"],
   data() {
     return {
       timePeriods: [
@@ -28,11 +30,13 @@ export default {
           seconds: 30 * 24 * 60 * 60,
           text: "Month",
         },
-      ]
+      ],
+      period: isNumber(this.defaultPeriodIndex) ? this.defaultPeriodIndex: 1
     };
   },
   mounted: function () {
-     this.$emit("initValue", this.timePeriods[1]);
+    let timePeriod = this.timePeriods[this.period]
+     this.$emit("change", timePeriod);
   },
   methods: {
     changeTimePeriod(e) {

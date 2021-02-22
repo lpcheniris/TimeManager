@@ -50,5 +50,14 @@ TimerController.get('/length/:id', async (req: Request, res: Response, next: Nex
   }
 })
 
+TimerController.get("/byDate/:startTime/:endTime", async (req: Request, res: Response, next: NextFunction) => {
+  let {startTime, endTime } = req.params
+  try {
+    const data = await Timer.find({startTime: {$gte: startTime, $lt: endTime}}).populate({path: "schedule", select: "schedule"}).populate({path: "plane"}).exec()
+    res.send({ data: data })
+  } catch (err) {
+    next(err)
+  }
+})
 
 
