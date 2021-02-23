@@ -2,23 +2,33 @@
   "plane": [
     {
       "name": "Professional Skills",
-      "color": "#AC92EB"
+      "color": "#AC92EB",
+      "duration": 2,
+      "durationUnit": "h"
     },
     {
       "name": "Soft Skills",
-      "color": "#4FC1E8"
+      "color": "#4FC1E8",
+      "duration": 1,
+      "durationUnit": "h"
     },
     {
       "name": "Health",
-      "color": "#A0D568"
+      "color": "#A0D568",
+      "duration": 1,
+      "durationUnit": "h"
     },
     {
       "name": "Enjoy",
-      "color": "#FFCE54"
+      "color": "#FFCE54",
+      "duration": 0.5,
+      "durationUnit": "h"
     },
     {
       "name": "Working",
-      "color": "#ED5564"
+      "color": "#ED5564",
+      "duration": 8,
+      "durationUnit": "h"
     }
   ]
 }
