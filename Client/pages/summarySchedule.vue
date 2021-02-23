@@ -29,6 +29,7 @@
       <div class="total-progress">
         <a-progress
           type="dashboard"
+          :width=120
           :percent="parseInt((totalDuration / calculateTotalPlaneDuration()) * 100)"
         />
       </div>
@@ -55,7 +56,7 @@
             }}</label>
             /
             {{
-              convertSecondsTOTime(timerGroupByPlane[plane].duration * 60 * 60)
+              convertSecondsTOTime(calculateTotalPlaneDuration(timerGroupByPlane[plane].duration))
             }}
           </div>
         </div>
@@ -130,7 +131,7 @@ export default {
     calculateProgress(plane) {
       let planeObj = this.timerGroupByPlane[plane];
       return parseInt(planeObj.duration
-        ? (planeObj.durationTime / (planeObj.duration * 60 * 60)) * 100
+        ? (planeObj.durationTime / this.calculateTotalPlaneDuration(planeObj.duration)) * 100
         : 0);
     },
     timePeriodChange(data) {
@@ -189,8 +190,8 @@ export default {
         return r;
       }, 0);
     },
-    calculateTotalPlaneDuration() {
-      let dayPlane = 12.5 * 60 * 60
+    calculateTotalPlaneDuration(oneDayhours = 12.5) {
+      let dayPlane =  oneDayhours * 60 * 60
       let weekPlane = dayPlane * 6
       let monthPlane = weekPlane * 4
       let seconds = 0
@@ -213,7 +214,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   align-items: center;
-  padding: 10px;
+  padding: 0 10px 10px;
 }
 .plane-summary {
   margin-bottom: 15px;
@@ -228,8 +229,7 @@ export default {
   margin-right: 10px;
 }
 .summary {
-  margin: 0 10px;
-  padding: 5px;
+  margin: 5px 15px 5px 15px;
   display: flex;
   align-items: center;
 }
@@ -237,7 +237,7 @@ export default {
   margin: auto;
 }
 .summary-progress {
-  padding: 3px 15px;
+  padding: 0px 15px;
 }
 .last-next-container .date-text {
   flex: 1;
