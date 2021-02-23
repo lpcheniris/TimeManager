@@ -25,11 +25,21 @@
         :disabled="currentDate.isSameOrAfter(moment())"
       />
     </div>
-    <div class="total-duration">{{}}</div>
+    <div class="total-duration">
+      <div class="total-progress">
+        <a-progress
+          type="dashboard"
+          :percent="parseInt((totalDuration / calculateTotalPlaneDuration()) * 100)"
+        />
+      </div>
+      <label>{{ convertSecondsTOTime(totalDuration) }} </label> 
+      <label>{{convertSecondsTOTime(calculateTotalPlaneDuration())}}</label>
+    </div>
     <div class="statistic-container">
       <div
         :key="timerGroupByPlane[plane].planeName"
         v-for="plane in Object.keys(timerGroupByPlane)"
+        class="plane-summary"
       >
         <div class="summary">
           <label
@@ -40,8 +50,13 @@
             {{ plane }}
           </div>
           <div class="summary-plane-time">
-            <label :style="{color: timerGroupByPlane[plane].color}">{{ convertSecondsTOTime(timerGroupByPlane[plane].durationTime) }}</label> / 
-            {{ convertSecondsTOTime(timerGroupByPlane[plane].duration* 60*60) }} 
+            <label :style="{ color: timerGroupByPlane[plane].color }">{{
+              convertSecondsTOTime(timerGroupByPlane[plane].durationTime)
+            }}</label>
+            /
+            {{
+              convertSecondsTOTime(timerGroupByPlane[plane].duration * 60 * 60)
+            }}
           </div>
         </div>
         <div class="summary-progress">
@@ -61,7 +76,7 @@ import { merge } from "lodash";
 import moment from "moment";
 import axios from "axios";
 import { convertSecondsTOTime } from "../utils/time";
-import { hexToRgb } from "../utils/utils"
+import { hexToRgb } from "../utils/utils";
 
 export default {
   name: "SummarySchdules",
@@ -76,6 +91,7 @@ export default {
       planeList: [],
       startTime: null,
       endTime: null,
+      totalDuration: 0,
     };
   },
   computed: {
@@ -112,8 +128,10 @@ export default {
     convertSecondsTOTime,
     hexToRgb,
     calculateProgress(plane) {
-      let planeObj = this.timerGroupByPlane[plane]
-      return planeObj.duration ? (planeObj.durationTime / (planeObj.duration* 60*60)) * 100 : 0
+      let planeObj = this.timerGroupByPlane[plane];
+      return parseInt(planeObj.duration
+        ? (planeObj.durationTime / (planeObj.duration * 60 * 60)) * 100
+        : 0);
     },
     timePeriodChange(data) {
       this.currentDate = moment();
@@ -137,6 +155,7 @@ export default {
       }).then((res) => {
         let data = res.data.data;
         this.timerList = data;
+        this.totalDuration = this.calculateTotalDuration(data);
       });
     },
     groupTimerList(timerList) {
@@ -164,14 +183,40 @@ export default {
     resetTimerList() {
       this.timerList = [];
     },
-    showTotalDuration() {},
+    calculateTotalDuration(list) {
+      return list.reduce((r, a) => {
+        r = r + a.durationTime;
+        return r;
+      }, 0);
+    },
+    calculateTotalPlaneDuration() {
+      let dayPlane = 12.5 * 60 * 60
+      let weekPlane = dayPlane * 6
+      let monthPlane = weekPlane * 4
+      let seconds = 0
+      if (this.period == "Day") {
+        seconds = dayPlane
+      } else if (this.period =="Week") {
+        seconds = weekPlane
+      } else if (this.period == "Month") {
+        seconds = monthPlane
+      }
+      return seconds
+    },
   },
 };
 </script>
 
 <style>
-.summary-plane-time {
-  width: 30%;
+.total-duration {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+}
+.plane-summary {
+  margin-bottom: 15px;
 }
 .summary-plane-name {
   flex: 1;
@@ -192,7 +237,7 @@ export default {
   margin: auto;
 }
 .summary-progress {
-  padding: 5px 15px;
+  padding: 3px 15px;
 }
 .last-next-container .date-text {
   flex: 1;
