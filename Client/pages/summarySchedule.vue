@@ -25,6 +25,7 @@
         :disabled="currentDate.isSameOrAfter(moment())"
       />
     </div>
+    <div class="total-duration">{{}}</div>
     <div class="statistic-container">
       <div
         :key="timerGroupByPlane[plane].planeName"
@@ -39,8 +40,15 @@
             {{ plane }}
           </div>
           <div class="summary-plane-time">
-            {{ convertSecondsTOTime(timerGroupByPlane[plane].durationTime) }}
+            <label :style="{color: timerGroupByPlane[plane].color}">{{ convertSecondsTOTime(timerGroupByPlane[plane].durationTime) }}</label> / 
+            {{ convertSecondsTOTime(timerGroupByPlane[plane].duration* 60*60) }} 
           </div>
+        </div>
+        <div class="summary-progress">
+          <a-progress
+            :stroke-color="timerGroupByPlane[plane].color"
+            :percent="calculateProgress(plane)"
+          />
         </div>
       </div>
     </div>
@@ -53,6 +61,7 @@ import { merge } from "lodash";
 import moment from "moment";
 import axios from "axios";
 import { convertSecondsTOTime } from "../utils/time";
+import { hexToRgb } from "../utils/utils"
 
 export default {
   name: "SummarySchdules",
@@ -63,7 +72,6 @@ export default {
     return {
       period: "",
       currentDate: moment(),
-
       timerList: [],
       planeList: [],
       startTime: null,
@@ -101,13 +109,18 @@ export default {
   },
   methods: {
     moment,
+    convertSecondsTOTime,
+    hexToRgb,
+    calculateProgress(plane) {
+      let planeObj = this.timerGroupByPlane[plane]
+      return planeObj.duration ? (planeObj.durationTime / (planeObj.duration* 60*60)) * 100 : 0
+    },
     timePeriodChange(data) {
       this.currentDate = moment();
       this.period = data.text;
       this.setStartAndEndTime();
       this.loadTimerData();
     },
-    convertSecondsTOTime,
     setStartAndEndTime() {
       this.startTime = this.currentDate
         .startOf(this.period.toLowerCase())
@@ -151,6 +164,7 @@ export default {
     resetTimerList() {
       this.timerList = [];
     },
+    showTotalDuration() {},
   },
 };
 </script>
@@ -174,6 +188,12 @@ export default {
   display: flex;
   align-items: center;
 }
+.summary-progress > div {
+  margin: auto;
+}
+.summary-progress {
+  padding: 5px 15px;
+}
 .last-next-container .date-text {
   flex: 1;
   text-align: center;
@@ -183,6 +203,6 @@ export default {
   justify-content: space-around;
   margin: 10px 20px;
   align-items: center;
-    height: 42px;
+  height: 42px;
 }
 </style>
