@@ -41,3 +41,15 @@ TaskCalendarController.get('/', async (req: Request, res: Response, next: NextFu
     next(err)
   }
 })
+
+TaskCalendarController.get('/byDateRange/:startDate/:endDate', async (req: Request, res: Response, next: NextFunction) => {
+  let {startDate, endDate } = req.params
+  try {
+    const data = await TaskCalendar.find({date: {$gte: startDate, $lt: endDate}})
+    res.send({ data: data })
+  } catch (err) {
+    next(err)
+  }
+})
+
+
