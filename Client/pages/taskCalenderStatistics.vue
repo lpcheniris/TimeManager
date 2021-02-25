@@ -199,6 +199,6 @@ export default {
   margin: 5px 10px;
 }
 .count-container {
-  height: 300px;
+  margin-bottom: 30px;
 }
 </style>

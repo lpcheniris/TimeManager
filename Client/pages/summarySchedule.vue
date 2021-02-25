@@ -10,9 +10,9 @@
         @click="handleLastDay"
       />
       <div class="date-text">
-        <div v-if="this.period == 'Week'">{{ this.currentDate.week() }}</div>
+        <div v-if="this.period == 'Week'">The {{ this.currentDate.week() }} Week</div>
         <div v-if="this.period == 'Month'">
-          {{ this.currentDate.month() + 1 }}
+          The {{ this.currentDate.month() + 1 }} Month
         </div>
         <div>{{ currentDateText }}</div>
       </div>
