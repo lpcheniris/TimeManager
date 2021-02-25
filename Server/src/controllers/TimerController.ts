@@ -16,7 +16,7 @@ TimerController.post('/', async (req: Request, res: Response, next: NextFunction
 
 TimerController.get('/', async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const data = await Timer.find({}).populate({path: "plane"}).exec()
+      const data = await Timer.find({}).populate({path: "plan"}).exec()
       res.send({ data: data })
     } catch (err) {
       next(err)
@@ -34,7 +34,7 @@ TimerController.delete("/:id", async (req: Request, res: Response, next: NextFun
 
 TimerController.get('/BySchedule/:id', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await Timer.find({schedule: req.params.id}).populate({path: "schedule", select: "schedule"}).populate({path: "plane"}).exec()
+    const data = await Timer.find({schedule: req.params.id}).populate({path: "schedule", select: "schedule"}).populate({path: "plan"}).exec()
     res.send({ data: data })
   } catch (err) {
     next(err)
@@ -53,7 +53,7 @@ TimerController.get('/length/:id', async (req: Request, res: Response, next: Nex
 TimerController.get("/byDate/:startTime/:endTime", async (req: Request, res: Response, next: NextFunction) => {
   let {startTime, endTime } = req.params
   try {
-    const data = await Timer.find({startTime: {$gte: startTime, $lt: endTime}}).populate({path: "schedule", select: "schedule"}).populate({path: "plane"}).exec()
+    const data = await Timer.find({startTime: {$gte: startTime, $lt: endTime}}).populate({path: "schedule", select: "schedule"}).populate({path: "plan"}).exec()
     res.send({ data: data })
   } catch (err) {
     next(err)

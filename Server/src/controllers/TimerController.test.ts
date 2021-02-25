@@ -7,7 +7,7 @@ describe('Test TimerController', () => {
       durationTime: 1,
       endTime: 1599706874600,
       startTime: 1599706873556,
-      plane: "study",
+      plan: "study",
       schedule: "js"
     });
     expect(result.status).toBe(200);

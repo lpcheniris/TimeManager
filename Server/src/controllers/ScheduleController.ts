@@ -29,7 +29,7 @@ async (req: Request, res: Response, next: NextFunction) => {
 
 ScheduleController.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await Schedule.find({}).lean().populate("plane").populate('restTime', "durationTime").exec()
+    let data = await Schedule.find({}).lean().populate("plan").populate('restTime', "durationTime").exec()
     res.send({ data: data })
   } catch (err) {
     next(err)
@@ -45,9 +45,9 @@ ScheduleController.delete("/:id", async (req: Request, res: Response, next: Next
   }
 })
 
-ScheduleController.get('/byPlaneId/:planeId', async (req: Request, res: Response, next: NextFunction) => {
+ScheduleController.get('/byPlanId/:planId', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await Schedule.find({ "plane": { "_id": req.params.planeId } }, "schedule").exec()
+    let data = await Schedule.find({ "plan": { "_id": req.params.planId } }, "schedule").exec()
     res.send({ data: data })
   } catch (err) {
     next(err)
@@ -65,7 +65,7 @@ ScheduleController.put('/:scheduleID', async (req: Request, res: Response, next:
 
 ScheduleController.get("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await Schedule.findOne({ _id: req.params.id }).populate({path: "plane"})
+    let data = await Schedule.findOne({ _id: req.params.id }).populate({path: "plan"})
     res.send({ data: data })
   } catch (err) {
     next(err)

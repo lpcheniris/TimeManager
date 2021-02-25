@@ -8,7 +8,7 @@ export const PublicController: Router = Router();
 
 PublicController.delete('/timer', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const plane = await Timer.deleteMany({})
+    const plan = await Timer.deleteMany({})
     res.send({ data: "ok" })
   } catch (err) {
     next(err)
@@ -16,7 +16,7 @@ PublicController.delete('/timer', async (req: Request, res: Response, next: Next
 })
 PublicController.delete('/schedule', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const plane = await Schedule.deleteMany({})
+    const plan = await Schedule.deleteMany({})
     res.send({ data: "ok" })
   } catch (err) {
     next(err)

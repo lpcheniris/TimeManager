@@ -1,24 +1,24 @@
 import mongoose from "mongoose"
 
-import { plane } from "./plane.json"
+import { plan } from "./plan.json"
 import setupMongo from "../../config/mongo";
-import { Plane } from "../../models/Plane"
+import { Plan } from "../../models/Plan"
 
 setupMongo() 
 
-async function addPlanes() {
+async function addPlans() {
   try {
-    await Plane.remove({})
-    plane.forEach((v) => {
-      new Plane(v).save()
+    await Plan.remove({})
+    plan.forEach((v) => {
+      new Plan(v).save()
     })
     
   } catch(e) {
     console.error(e)
   } finally {
     // mongoose.disconnect();
-    console.log("Generate Plane Seccefully!")
+    console.log("Generate Plan Seccefully!")
   }
 }
 
-addPlanes()
+addPlans()

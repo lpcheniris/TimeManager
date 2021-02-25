@@ -1,11 +1,11 @@
 <template>
   <div class="timer-container">
-    <div class="plane-title" v-if="schedule.plane">
+    <div class="plan-title" v-if="schedule.plan">
       <div
-        class="plane-name-block"
-        :style="{ background: schedule.plane.color }"
+        class="plan-name-block"
+        :style="{ background: schedule.plan.color }"
       ></div>
-      {{ schedule.plane.name }}
+      {{ schedule.plan.name }}
     </div>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
@@ -165,7 +165,7 @@ export default {
             startTime: values.startTime.format("x"),
             endTime: values.endTime.format("x"),
             durationTime: this.durationTime,
-            plane: this.schedule.plane,
+            plan: this.schedule.plan,
           };
           axios({
             method: "post",
@@ -188,7 +188,7 @@ export default {
 </script>
 
 <style>
-.plane-title {
+.plan-title {
   font-size: 24px;
   text-align: center;
   padding: 10px;

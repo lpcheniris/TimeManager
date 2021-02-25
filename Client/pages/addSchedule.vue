@@ -1,6 +1,6 @@
 <template>
   <div class="add-schedule-container">
-    <Plane @change="planeChange" @initValue="(v) => (this.plane = v)"></Plane>
+    <Plan @change="planChange" @initValue="(v) => (this.plan = v)"></Plan>
     <TimePeriod
       @change="timePeriodChange"
       @initValue="(v) => (this.timePeriod = v)"
@@ -68,19 +68,19 @@
 <script>
 import axios from "axios";
 import moment from "moment";
-import Plane from "../components/Plane";
+import Plan from "../components/Plan";
 import TimePeriod from "../components/TimePeriod";
 import { convertTimeTOSeconds } from "../utils/time";
 
 export default {
   name: "AddSchedule",
   components: {
-    Plane,
+    Plan,
     TimePeriod,
   },
   data() {
     return {
-      plane: "",
+      plan: "",
       timePeriod: "",
     };
   },
@@ -95,8 +95,8 @@ export default {
       // Can not select days before today and today
       return current && current < moment().subtract(1, "day").endOf("day");
     },
-    planeChange(planeId) {
-      this.plane = planeId;
+    planChange(planId) {
+      this.plan = planId;
     },
     timePeriodChange(timePeriod) {
       this.timePeriod = timePeriod;
@@ -111,7 +111,7 @@ export default {
             schedule: values.schedule,
             startTime: values.startTime.format("x"),
             timePeriod: this.timePeriod,
-            plane: this.plane,
+            plan: this.plan,
           };
           axios({
             method: "post",

@@ -3,16 +3,16 @@
     <div :key="schedule._id" v-for="schedule in schedules">
       <div
         class="schedule-item-container"
-        :style="{ 'border-color': schedule.plane.color }"
+        :style="{ 'border-color': schedule.plan.color }"
       >
-        <nuxt-link :to="'addtimer/' + schedule.plane._id +'/' + schedule._id">
+        <nuxt-link :to="'addtimer/' + schedule.plan._id +'/' + schedule._id">
           <div class="list-title">
-            <div class="plane-name">
+            <div class="plan-name">
               <div
-                class="plane-name-block"
-                :style="{ background: schedule.plane.color }"
+                class="plan-name-block"
+                :style="{ background: schedule.plan.color }"
               ></div>
-              <div>{{ schedule.plane.name }}</div>
+              <div>{{ schedule.plan.name }}</div>
               <div>
                 <a-icon
                   class="done-icon"
@@ -23,7 +23,7 @@
                 />
               </div>
             </div>
-            <div class="time-period" :style="{ color: schedule.plane.color }">
+            <div class="time-period" :style="{ color: schedule.plan.color }">
               {{ schedule.timePeriod.text }}
             </div>
           </div>
@@ -32,7 +32,7 @@
             <div class="time-content">
               <section
                 class="rest-time"
-                :style="{ color: schedule.plane.color }"
+                :style="{ color: schedule.plan.color }"
               >
                 {{
                   schedule.duration > countRestTime(schedule.restTime)
@@ -227,14 +227,14 @@ export default {
   font-size: 14px;
 }
 
-.plane-name-block {
+.plan-name-block {
   display: inline-block;
   width: 20px;
   height: 20px;
   border-radius: 10px;
   margin-right: 8px;
 }
-.plane-name {
+.plan-name {
   display: flex;
 }
 

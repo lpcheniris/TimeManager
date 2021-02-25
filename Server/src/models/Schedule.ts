@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import { Plane } from "./Plane";
+import { Plan } from "./Plan";
 const ScheduleSchema = new mongoose.Schema({
   duration: { type: Number, min: 0, required: true },
   timePeriod: Object,
-  plane: { type: mongoose.Schema.Types.ObjectId, ref: Plane, required: true },
+  plan: { type: mongoose.Schema.Types.ObjectId, ref: Plan, required: true },
   schedule: { type: String, required: true, unique: true, minlength: 2, maxlength: 50 },
   startTime: { type: Number, min: 0, required: true, default: new Date().getTime() },
   isDone: { type: Boolean, default: false }

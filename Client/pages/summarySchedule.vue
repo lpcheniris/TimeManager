@@ -30,40 +30,40 @@
         <a-progress
           type="dashboard"
           :width=120
-          :percent="parseInt((totalDuration / calculateTotalPlaneDuration()) * 100)"
+          :percent="parseInt((totalDuration / calculateTotalPlanDuration()) * 100)"
         />
       </div>
       <label>{{ convertSecondsTOTime(totalDuration) }} </label> 
-      <label>{{convertSecondsTOTime(calculateTotalPlaneDuration())}}</label>
+      <label>{{convertSecondsTOTime(calculateTotalPlanDuration())}}</label>
     </div>
     <div class="statistic-container">
       <div
-        :key="timerGroupByPlane[plane].planeName"
-        v-for="plane in Object.keys(timerGroupByPlane)"
-        class="plane-summary"
+        :key="timerGroupByPlan[plan].planName"
+        v-for="plan in Object.keys(timerGroupByPlan)"
+        class="plan-summary"
       >
         <div class="summary">
           <label
             class="summary-label"
-            :style="{ 'background-color': timerGroupByPlane[plane].color }"
+            :style="{ 'background-color': timerGroupByPlan[plan].color }"
           />
-          <div class="summary-plane-name">
-            {{ plane }}
+          <div class="summary-plan-name">
+            {{ plan }}
           </div>
-          <div class="summary-plane-time">
-            <label :style="{ color: timerGroupByPlane[plane].color }">{{
-              convertSecondsTOTime(timerGroupByPlane[plane].durationTime)
+          <div class="summary-plan-time">
+            <label :style="{ color: timerGroupByPlan[plan].color }">{{
+              convertSecondsTOTime(timerGroupByPlan[plan].durationTime)
             }}</label>
             /
             {{
-              convertSecondsTOTime(calculateTotalPlaneDuration(timerGroupByPlane[plane].duration))
+              convertSecondsTOTime(calculateTotalPlanDuration(timerGroupByPlan[plan].duration))
             }}
           </div>
         </div>
         <div class="summary-progress">
           <a-progress
-            :stroke-color="timerGroupByPlane[plane].color"
-            :percent="calculateProgress(plane)"
+            :stroke-color="timerGroupByPlan[plan].color"
+            :percent="calculateProgress(plan)"
           />
         </div>
       </div>
@@ -89,15 +89,15 @@ export default {
       period: "",
       currentDate: moment(),
       timerList: [],
-      planeList: [],
+      planList: [],
       startTime: null,
       endTime: null,
       totalDuration: 0,
     };
   },
   computed: {
-    timerGroupByPlane: function () {
-      return merge({}, this.planeList, this.groupTimerList(this.timerList));
+    timerGroupByPlan: function () {
+      return merge({}, this.planList, this.groupTimerList(this.timerList));
     },
     currentDateText: function () {
       let isTimeValiable = this.startTime && this.endTime;
@@ -114,13 +114,13 @@ export default {
   mounted: function () {
     axios({
       method: "get",
-      url: "/api/plane",
+      url: "/api/plan",
     }).then((res) => {
       let data = res.data.data.reduce((r, a) => {
         r[a.name] = a;
         return r;
       }, {});
-      this.planeList = data;
+      this.planList = data;
     });
     this.loadTimerData();
   },
@@ -128,10 +128,10 @@ export default {
     moment,
     convertSecondsTOTime,
     hexToRgb,
-    calculateProgress(plane) {
-      let planeObj = this.timerGroupByPlane[plane];
-      return parseInt(planeObj.duration
-        ? (planeObj.durationTime / this.calculateTotalPlaneDuration(planeObj.duration)) * 100
+    calculateProgress(plan) {
+      let planObj = this.timerGroupByPlan[plan];
+      return parseInt(planObj.duration
+        ? (planObj.durationTime / this.calculateTotalPlanDuration(planObj.duration)) * 100
         : 0);
     },
     timePeriodChange(data) {
@@ -160,16 +160,16 @@ export default {
       });
     },
     groupTimerList(timerList) {
-      let groupByPlane = timerList.reduce((r, a) => {
-        r[a.plane.name] = {
-          ...r[a.plane.name],
-          durationTime: r[a.plane.name]
-            ? r[a.plane.name]["durationTime"] + a.durationTime
+      let groupByPlan = timerList.reduce((r, a) => {
+        r[a.plan.name] = {
+          ...r[a.plan.name],
+          durationTime: r[a.plan.name]
+            ? r[a.plan.name]["durationTime"] + a.durationTime
             : a.durationTime,
         };
         return r;
       }, {});
-      return groupByPlane;
+      return groupByPlan;
     },
     handleLastDay() {
       this.currentDate = this.currentDate.subtract(1, this.period);
@@ -190,17 +190,17 @@ export default {
         return r;
       }, 0);
     },
-    calculateTotalPlaneDuration(oneDayhours = 12.5) {
-      let dayPlane =  oneDayhours * 60 * 60
-      let weekPlane = dayPlane * 6
-      let monthPlane = weekPlane * 4
+    calculateTotalPlanDuration(oneDayhours = 12.5) {
+      let dayPlan =  oneDayhours * 60 * 60
+      let weekPlan = dayPlan * 6
+      let monthPlan = weekPlan * 4
       let seconds = 0
       if (this.period == "Day") {
-        seconds = dayPlane
+        seconds = dayPlan
       } else if (this.period =="Week") {
-        seconds = weekPlane
+        seconds = weekPlan
       } else if (this.period == "Month") {
-        seconds = monthPlane
+        seconds = monthPlan
       }
       return seconds
     },
@@ -216,10 +216,10 @@ export default {
   align-items: center;
   padding: 0 10px 10px;
 }
-.plane-summary {
+.plan-summary {
   margin-bottom: 15px;
 }
-.summary-plane-name {
+.summary-plan-name {
   flex: 1;
 }
 .summary-label {

@@ -4,7 +4,7 @@
       <div class="schedule-title" v-if="timers.length > 0">
       <div
         class="schedule-name-block"
-        :style="{ background: timers[0].plane.color }"
+        :style="{ background: timers[0].plan.color }"
       ></div>
       {{ timers[0].schedule.schedule }}
     </div>
@@ -17,9 +17,9 @@
       :key="timer._id"
       v-for="timer in timers"
       class="timer-item-container"
-      :style="{ 'border-color': timer.plane.color }"
+      :style="{ 'border-color': timer.plan.color }"
     >
-      <div :class="['plane-name', isShowDuration ? 'plane-name-bottom' : null]">
+      <div :class="['plan-name', isShowDuration ? 'plan-name-bottom' : null]">
         <div>{{ timer.comment }}</div>
       </div>
       <div class="duration-wrraper" v-show="isShowDuration">
@@ -107,10 +107,10 @@ export default {
   border-radius: 10px;
   margin-right: 8px;
 }
-.plane-name-bottom {
+.plan-name-bottom {
   border-bottom: solid 1px #aaa;
 }
-.timer-item-container > .plane-name {
+.timer-item-container > .plan-name {
   color: 14px;
   display: flex;
   font-weight: bold;

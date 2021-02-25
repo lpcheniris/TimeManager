@@ -1,28 +1,28 @@
 import mongoose from "mongoose"
 
-import { plane } from "./plane.json"
+import { plan } from "./plan.json"
 import setupMongo from "../../config/mongo";
-import { Plane } from "../../models/Plane"
+import { Plan } from "../../models/Plan"
 
 setupMongo() 
 
-async function fixPlanes() {
+async function fixPlans() {
   try {
-    plane.forEach((v) => {
+    plan.forEach((v) => {
         console.log(v.duration)
-      Plane.findOneAndUpdate({name: v.name}, {$set:{
+      Plan.findOneAndUpdate({name: v.name}, {$set:{
         duration: v.duration,
         durationUnit: v.durationUnit
-      }}, (error, plane)=> {
-          console.log(error, plane)
+      }}, (error, plan)=> {
+          console.log(error, plan)
       })
     })
   } catch(e) {
     console.error(e)
   } finally {
     // mongoose.disconnect();
-    console.log("Fix Plane Seccefully!")
+    console.log("Fix Plan Seccefully!")
   }
 }
 
-fixPlanes()
+fixPlans()

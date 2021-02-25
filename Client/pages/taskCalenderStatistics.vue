@@ -51,7 +51,7 @@ import { convertSecondsTOTime } from "../utils/time";
 import _ from "lodash";
 
 export default {
-  name: "taskCalenderStatictis",
+  name: "taskCalenderStatistics",
   data() {
     return {
       startTime: null,
@@ -136,10 +136,10 @@ export default {
             moment(v.date).format("YYYY-MM-DD") == date.format("YYYY-MM-DD")
           );
         });
-        let planeTaskLength = this.tasks.length;
+        let planTaskLength = this.tasks.length;
         let taskListLength = taskList ? taskList.tasks.length : 0;
-        let opacity = planeTaskLength
-          ? taskListLength / planeTaskLength + 0.1
+        let opacity = planTaskLength
+          ? taskListLength / planTaskLength + 0.1
           : 0.1;
         return `rgba(100, 149, 237, ${opacity})`;
       }

@@ -1,10 +1,10 @@
 <template>
   <div class="timer-container">
-    <Plane
-      :defaultPlane="activePlane"
-      @change="planeChange"
-      @initValue="(planeId) => initPlane(planeId)"
-    ></Plane>
+    <Plan
+      :defaultPlan="activePlan"
+      @change="planChange"
+      @initValue="(planId) => initPlan(planId)"
+    ></Plan>
     <a-form class="form-container" :form="timerForm">
       <a-form-item class="schedule-container">
         <a-select
@@ -82,12 +82,12 @@ import moment, { duration, months } from "moment";
 import timer from "moment-timer";
 import numeral from "numeral";
 import axios from "axios";
-import Plane from "../../../components/Plane";
+import Plan from "../../../components/Plan";
 
 export default {
   name: "Timer",
   components: {
-    Plane,
+    Plan,
   },
   data() {
     return {
@@ -97,7 +97,7 @@ export default {
       durationHours: 0,
       durationMinutes: 0,
       durationSeconds: 0,
-      activePlane: "",
+      activePlan: "",
       schedule: "",
       schedules: [],
     };
@@ -106,22 +106,22 @@ export default {
     this.timerForm = this.$form.createForm(this, { name: "timer form" });
   },
   mounted: function () {
-    if (!!this.$nuxt.$route.params.plane) {
-      let plane = this.$nuxt.$route.params.plane;
-      this.activePlane = plane;
+    if (!!this.$nuxt.$route.params.plan) {
+      let plan = this.$nuxt.$route.params.plan;
+      this.activePlan = plan;
     }
   },
   methods: {
     moment,
-    initPlane(planeId) {
-      if (!!this.activePlane) {
+    initPlan(planId) {
+      if (!!this.activePlan) {
         if (!!this.$nuxt.$route.params.schedule) {
-          this.refreshSchedule(this.activePlane, true);
+          this.refreshSchedule(this.activePlan, true);
         } else {
-          this.refreshSchedule(this.activePlane, false);
+          this.refreshSchedule(this.activePlan, false);
         }
       } else {
-        this.planeChange(planeId);
+        this.planChange(planId);
       }
     },
     startTimer() {
@@ -148,15 +148,15 @@ export default {
         this.intervelTimer.stop();
       }
     },
-    planeChange(palneId) {
-      this.activePlane = palneId;
+    planChange(palneId) {
+      this.activePlan = palneId;
       this.refreshSchedule(palneId, false);
     },
-    refreshSchedule(planeId, fromRoute = false) {
+    refreshSchedule(planId, fromRoute = false) {
       this.schedules = [];
       axios({
         method: "get",
-        url: "/api/schedule/byPlaneId/" + planeId,
+        url: "/api/schedule/byPlanId/" + planId,
       }).then((res) => {
         this.schedules = res.data.data;
         if (fromRoute) {
@@ -196,7 +196,7 @@ export default {
             startTime: values.startTime.format("x"),
             endTime: values.endTime.format("x"),
             durationTime: this.durationTime,
-            plane: this.activePlane,
+            plan: this.activePlan,
           };
           axios({
             method: "post",

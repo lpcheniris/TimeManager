@@ -1,13 +1,13 @@
 import mongoose from "mongoose"
 
 import setupMongo from "../config/mongo";
-import { Plane } from "../models/Plane"
+import { Plan } from "../models/Plan"
 import { Timer } from "../models/Timer"
 import { Schedule } from "../models/Schedule"
 
 setupMongo() 
 
-async function addPlanes() {
+async function addPlans() {
   try {
     await Timer.remove({})
     await Schedule.remove({})
@@ -19,4 +19,4 @@ async function addPlanes() {
   }
 }
 
-addPlanes()
+addPlans()
