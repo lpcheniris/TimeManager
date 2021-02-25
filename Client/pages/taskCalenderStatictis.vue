@@ -156,6 +156,12 @@ export default {
 </script>
 
 <style>
+.ant-fullcalendar-fullscreen .ant-fullcalendar-date:hover { 
+   background: #fff;
+}
+.ant-fullcalendar-fullscreen .ant-fullcalendar-selected-day .ant-fullcalendar-date {
+    background: #fff;
+}
 .ant-fullcalendar-selected-day .ant-fullcalendar-date {
   background-color: #fff;
 }
