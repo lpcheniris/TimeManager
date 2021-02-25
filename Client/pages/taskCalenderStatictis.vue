@@ -1,5 +1,25 @@
 <template>
   <div>
+    <div class="last-next-container">
+      <a-button
+        type="primary"
+        shape="circle"
+        icon="left"
+        size="small"
+        @click="handleLastDay"
+      />
+      <div class="date-text">
+        <div>{{ currentDateText }}</div>
+      </div>
+      <a-button
+        type="primary"
+        shape="circle"
+        icon="right"
+        size="small"
+        @click="handleNextDay"
+        :disabled="currentDate && currentDate.format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD')"
+      />
+    </div>
     <div class="count-container">
       <div
         class="count-item"
@@ -11,14 +31,14 @@
       </div>
     </div>
     <div class="calendar-container">
-      <a-calendar :fullscreen="true" :header-render="headerRender">
+      <a-calendar :fullscreen="true" :header-render="headerRender" :value="currentDate">
         <div
           class="task-date-label"
           slot="dateCellRender"
           slot-scope="value"
           :style="{ 'background-color': calculateTaskColor(value) }"
           v-if="calculateTaskDisplay(value)"
-        ></div>
+        />
       </a-calendar>
     </div>
   </div>
@@ -34,16 +54,18 @@ export default {
   name: "taskCalenderStatictis",
   data() {
     return {
-      startTime: moment().startOf("month"),
-      endTime: moment().endOf("month"),
+      startTime: null,
+      endTime: null,
       taskCalendarListByMonth: [],
       tasks: [],
+      currentDate: moment(),
+      period: "month"
     };
   },
   computed: {
     taskTimes: function () {
       let taskObject = {};
-      if (this.checkTaskValiable()) {
+    
         this.tasks.forEach((v, i) => {
           taskObject[v._id] = {
             task: v.task,
@@ -57,19 +79,21 @@ export default {
             }
           });
         });
-      }
+      
       return taskObject;
+    },
+    currentDateText: function () {
+      let isTimeValiable = this.startTime && this.endTime;
+      if (isTimeValiable) {
+        return `${moment(Number(this.startTime)).format(
+          "YYYY-MM-DD"
+        )} to ${moment(Number(this.endTime)).format("YYYY-MM-DD")}`;
+      }
+      return "";
     },
   },
   mounted: function () {
-    axios({
-      method: "get",
-      url: `/api/taskcalendar/byDateRange/${this.startTime.format(
-        "x"
-      )}/${this.endTime.format("x")}`,
-    }).then((res) => {
-      this.taskCalendarListByMonth = res.data.data;
-    });
+    this.loadTaskCalendarData();
     axios({
       method: "get",
       url: "/api/task/",
@@ -78,6 +102,30 @@ export default {
     });
   },
   methods: {
+    moment,
+    handleLastDay() {
+      this.currentDate.subtract(1, this.period);
+      // this.currentDate = this.currentDate.subtract(1, this.period);
+      this.loadTaskCalendarData();
+    },
+    handleNextDay() {
+      this.currentDate = this.currentDate.add(1, this.period);
+      this.loadTaskCalendarData();
+    },
+    setStartAndEndTime() {
+      let newCurrentDate = this.currentDate.format("YYYY-MM-DD")
+      this.startTime = moment(newCurrentDate).startOf("month")
+      this.endTime = moment(newCurrentDate).endOf("month")
+    },
+    loadTaskCalendarData() {
+      this.setStartAndEndTime();
+      axios({
+        method: "get",
+        url: `/api/taskcalendar/byDateRange/${this.startTime.format("x")}/${this.endTime.format("x")}`,
+      }).then((res) => {
+        this.taskCalendarListByMonth = res.data.data;
+      });
+    },
     checkTaskValiable() {
       return this.tasks.length && this.taskCalendarListByMonth.length;
     },
@@ -90,14 +138,15 @@ export default {
         });
         let planeTaskLength = this.tasks.length;
         let taskListLength = taskList ? taskList.tasks.length : 0;
-        let opacity = planeTaskLength ? (taskListLength / planeTaskLength) + 0.2 : 0.2
-        console.log((taskListLength / planeTaskLength))
-
-        return `rgba(100, 149, 237, ${opacity})`
+        let opacity = planeTaskLength
+          ? taskListLength / planeTaskLength + 0.1
+          : 0.1;
+        return `rgba(100, 149, 237, ${opacity})`;
       }
+      return `rgba(100, 149, 237, 0.1)`
     },
     calculateTaskDisplay(date) {
-      return date.isBefore(this.endTime) && date.isAfter(this.startTime)
+      return date.isBefore(this.endTime) && date.isAfter(this.startTime);
     },
     headerRender() {
       return null;
@@ -107,11 +156,19 @@ export default {
 </script>
 
 <style>
-.ant-fullcalendar-fullscreen .ant-fullcalendar-column-header {
-    padding-right: 18px;
+.ant-fullcalendar-selected-day .ant-fullcalendar-date {
+  background-color: #fff;
 }
-.ant-fullcalendar-fullscreen .ant-fullcalendar-value { 
-   text-align: center;
+.last-next-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+.ant-fullcalendar-fullscreen .ant-fullcalendar-column-header {
+  padding-right: 18px;
+}
+.ant-fullcalendar-fullscreen .ant-fullcalendar-value {
+  text-align: center;
 }
 .ant-fullcalendar .ant-fullcalendar-content {
   height: auto;
@@ -124,7 +181,6 @@ export default {
   width: 100%;
   height: 20px;
   border-radius: 3px;
-  /* border: 1px  solid; */
 }
 .calendar-container {
   padding: 10px;
