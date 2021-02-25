@@ -6,7 +6,7 @@
         :style="{ 'border-color': schedule.plan.color }"
       >
         <nuxt-link :to="'addtimer/' + schedule.plan._id +'/' + schedule._id">
-          <div class="list-title">
+          <div class="list-title" :style="{ 'border-color': schedule.plan.color }">
             <div class="plan-name">
               <div
                 class="plan-name-block"
@@ -244,7 +244,7 @@ export default {
   font-weight: bold;
   padding: 10px;
   color: 14px;
-  border-bottom: solid 1px #aaa;
+  border-bottom: solid 1px;
 }
 
 .rest-time {
@@ -257,7 +257,7 @@ export default {
   margin: 10px 15px;
 }
 .schedule-item-container {
-  border: solid 2px;
+  border: solid 1px;
   margin: 20px;
   border-radius: 5px;
 }
