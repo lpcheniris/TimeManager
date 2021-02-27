@@ -56,6 +56,16 @@
           ]"
         />
       </a-form-item>
+      <div class="rate-wrapper">
+         <div class="rate-container">
+        <label>Importance:</label>
+        <a-rate :value="importance" @change="handleImportanceRateChange" :allowClear="false" />
+      </div>
+      <div class="rate-container">
+        <label>Emergency:</label>
+        <a-rate :value="emergency" @change="handleeMergencyRateChange" :allowClear="false" />
+      </div>
+      </div>
       <div class="submit-container">
         <a-button type="primary" html-type="submit" @click="handleSubmit"
           >Submit</a-button
@@ -82,6 +92,8 @@ export default {
     return {
       plan: "",
       timePeriod: "",
+      importance: 1,
+      emergency: 1,
     };
   },
   beforeCreate() {
@@ -91,6 +103,12 @@ export default {
   },
   methods: {
     moment,
+    handleeMergencyRateChange(v){
+      this.emergency = v
+    },
+    handleImportanceRateChange(v){
+      this.importance = v
+    },
     disabledDate(current) {
       // Can not select days before today and today
       return current && current < moment().subtract(1, "day").endOf("day");
@@ -102,7 +120,7 @@ export default {
       this.timePeriod = timePeriod;
     },
     handleSubmit() {
-      const _this = this
+      const _this = this;
       this.addScheduleForm.validateFieldsAndScroll((err, values) => {
         let duration = convertTimeTOSeconds(values.duration);
         if (!err) {
@@ -112,6 +130,8 @@ export default {
             startTime: values.startTime.format("x"),
             timePeriod: this.timePeriod,
             plan: this.plan,
+            importance: this.importance,
+            emergency: this.emergency,
           };
           axios({
             method: "post",
@@ -133,6 +153,15 @@ export default {
 </script>
 
 <style>
+.rate-wrapper {
+  margin-bottom: 20px;
+}
+.rate-container {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .ant-time-picker-input[disabled] {
   background-color: #ffffff;
   color: rgba(0, 0, 0, 0.75);
@@ -155,8 +184,7 @@ export default {
   text-align: center;
 }
 .form-container {
-  width: 128px;
-  min-width: 50%;
+  width: 230px;
   margin: auto;
 }
 .submit-container {

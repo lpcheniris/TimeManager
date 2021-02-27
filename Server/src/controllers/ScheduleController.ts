@@ -29,7 +29,7 @@ async (req: Request, res: Response, next: NextFunction) => {
 
 ScheduleController.get('/', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await Schedule.find({}).lean().populate("plan").populate('restTime', "durationTime").exec()
+    let data = await Schedule.find({}).sort({startTime: 1,  emergency: -1, importance: -1}).lean().populate("plan").populate('restTime', "durationTime").exec()
     res.send({ data: data })
   } catch (err) {
     next(err)

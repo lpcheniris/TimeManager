@@ -5,7 +5,7 @@ import setupMongo from "../config/mongo";
 import { Timer } from "../models/Timer"
 import { Schedule } from "../models/Schedule"
 // import { Task } from "../models/Task";
-import { TaskCalendar } from "../models/TaskCalendar";
+// import { TaskCalendar } from "../models/TaskCalendar";
 
 setupMongo() 
 
@@ -15,7 +15,7 @@ async function addPlans() {
     await Schedule.remove({})
     // await Plan.remove({})
     // await Task.remove({})
-    await TaskCalendar.remove({})
+    // await TaskCalendar.remove({})
     console.log("Remove Timer and Shedules Seccefully!")
   } catch(e) {
     console.error(e)

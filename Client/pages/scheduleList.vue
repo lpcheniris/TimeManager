@@ -5,8 +5,11 @@
         class="schedule-item-container"
         :style="{ 'border-color': schedule.plan.color }"
       >
-        <nuxt-link :to="'addtimer/' + schedule.plan._id +'/' + schedule._id">
-          <div class="list-title" :style="{ 'border-color': schedule.plan.color }">
+        <nuxt-link :to="'addtimer/' + schedule.plan._id + '/' + schedule._id">
+          <div
+            class="list-title"
+            :style="{ 'border-color': schedule.plan.color }"
+          >
             <div class="plan-name">
               <div
                 class="plan-name-block"
@@ -52,10 +55,28 @@
                 <label>{{ convertCompletedTime(schedule) }}</label>
               </section>
             </div>
-            <section class="foot-section">
+            <section class="start-end-time-section">
               <div>
                 <div>Start Time: {{ formatStartTime(schedule.startTime) }}</div>
                 <div>End Time: {{ formatEndTime(schedule) }}</div>
+              </div>
+            </section>
+            <section>
+              <div class="list-rate-container">
+                <span>Importance:</span>
+                <a-rate
+                  :value="schedule.importance"
+                  :allowClear="false"
+                  disabled
+                />
+              </div>
+              <div class="list-rate-container">
+                <span>Emergency:</span>
+                <a-rate
+                  :value="schedule.emergency"
+                  :allowClear="false"
+                  disabled
+                />
               </div>
             </section>
             <div class="handler-wrapper">
@@ -73,13 +94,12 @@
                 v-on:click="handleFixTime(schedule._id, $event)"
                 >Add Time</a-button
               >
-               <a-button
+              <a-button
                 type="primary"
                 shape="round"
                 v-on:click="handleShowTimer(schedule._id, $event)"
                 >Show Timer</a-button
               >
-              
             </div>
           </div>
         </nuxt-link>
@@ -164,26 +184,35 @@ export default {
     },
     handleFixTime(scheduleId, event) {
       event.preventDefault();
-      this.$router.push("/fixtimer/"+scheduleId)
+      this.$router.push("/fixtimer/" + scheduleId);
     },
     handleShowTimer(scheduleId, event) {
       event.preventDefault();
-       axios({
-            method: "get",
-            url: "/api/timer/length/" + scheduleId,
-          }).then((res) => {
-            if(res.data.dataSize == 0) {
-              this.$message.success("No Data!");
-            } else {
-               this.$router.push("/timerList/"+scheduleId)
-            }
-        });
-    }
+      axios({
+        method: "get",
+        url: "/api/timer/length/" + scheduleId,
+      }).then((res) => {
+        if (res.data.dataSize == 0) {
+          this.$message.success("No Data!");
+        } else {
+          this.$router.push("/timerList/" + scheduleId);
+        }
+      });
+    },
   },
 };
 </script>
 
 <style>
+.list-rate-container span {
+  margin-right: 10px;
+}
+.list-rate-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
 .ant-modal-confirm .ant-modal-confirm-btns {
   float: none;
   text-align: center;
@@ -199,7 +228,7 @@ export default {
   font-size: 14px;
 }
 
-.foot-section {
+.start-end-time-section {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
