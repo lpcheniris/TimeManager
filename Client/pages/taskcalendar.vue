@@ -93,17 +93,13 @@ export default {
 }
 .task {
   padding: 20px;
-  min-height: 300px;
+  min-height: 200px;
 }
 .today {
   font-size: 20px;
   font-weight: bold;
   align-items: center;
-  color: #655759;
-  font-size: 20px;
-  font-weight: bold;
-  align-items: center;
-  color: #655759;
+  color: rgb(90, 20, 140);
   padding: 20px 0px 10px 20px;
   border-bottom: 1px solid;
 }

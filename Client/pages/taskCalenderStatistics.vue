@@ -141,9 +141,9 @@ export default {
         let opacity = planTaskLength
           ? taskListLength / planTaskLength + 0.1
           : 0.1;
-        return `rgba(100, 149, 237, ${opacity})`;
+        return `rgb(90, 20, 140, ${opacity})`;
       }
-      return `rgba(100, 149, 237, 0.1)`
+      return `rgba(90, 20, 140, 0.1)`
     },
     calculateTaskDisplay(date) {
       return date.isBefore(this.endTime) && date.isAfter(this.startTime);
@@ -195,7 +195,7 @@ export default {
   display: flex;
   justify-content: space-between;
   padding: 5px 20px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgb(90, 20, 140, 0.8);
   margin: 5px 10px;
 }
 .count-container {

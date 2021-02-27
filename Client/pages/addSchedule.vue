@@ -156,11 +156,14 @@ export default {
 .rate-wrapper {
   margin-bottom: 20px;
 }
+.rate-container label {
+  margin-right: 10px;
+}
 .rate-container {
   display: flex;
   align-items: center;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 .ant-time-picker-input[disabled] {
   background-color: #ffffff;
@@ -184,7 +187,7 @@ export default {
   text-align: center;
 }
 .form-container {
-  width: 230px;
+  width: 260px;
   margin: auto;
 }
 .submit-container {

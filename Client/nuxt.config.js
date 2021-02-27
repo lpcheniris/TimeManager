@@ -29,7 +29,10 @@ export default {
   ** Global CSS
   */
   css: [
-    'ant-design-vue/dist/antd.css'
+    {
+      src: 'ant-design-vue/dist/antd.less',
+      lang: 'less'
+    }
   ],
   /*
   ** Plugins to load before mounting the App
@@ -53,21 +56,33 @@ export default {
   */
   modules: [
     '@nuxtjs/axios',
-      '@nuxtjs/proxy'
+    '@nuxtjs/proxy'
   ],
   proxy: {
     '/api': {
       target: 'http://localhost:8000',
       pathRewrite: {
-        '^/api' : '/'
-        }
+        '^/api': '/'
       }
+    }
   },
   /*
   ** Build configuration
   ** See https://nuxtjs.org/api/configuration-build/
   */
   build: {
+    loaders: {
+      less: {
+        javascriptEnabled: true,  // 这里非常重要 否则编译的时候会报错
+        modifyVars: {
+          'primary-color':  'rgb(90, 20, 140)',
+          'component-background': '#ffffff',
+           'link-color': '#fff',
+           'link-hover-color': '#f181fc',
+           'link-active-color': '#f181fc',
+        }
+      }
+    }
   },
   server: {
     port: 3000, // default: 3000

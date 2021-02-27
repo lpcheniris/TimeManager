@@ -84,6 +84,7 @@
                 type="primary"
                 html-type="submit"
                 shape="round"
+                size="small"
                 v-on:click="handleDone(schedule._id, $event)"
                 >Done</a-button
               >
@@ -91,12 +92,14 @@
                 type="primary"
                 html-type="submit"
                 shape="round"
+                size="small"
                 v-on:click="handleFixTime(schedule._id, $event)"
                 >Add Time</a-button
               >
               <a-button
                 type="primary"
                 shape="round"
+                size="small"
                 v-on:click="handleShowTimer(schedule._id, $event)"
                 >Show Timer</a-button
               >
@@ -209,7 +212,7 @@ export default {
 }
 .list-rate-container {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

@@ -2,13 +2,13 @@
   <section class="menu-container">
     <nuxt-link to="/taskcalendar" class="menu-button">
       <div class="menu-item">
-        <a-icon type="unordered-list" />
+        <a-icon type="unordered-list" class="menu-icon" />
         <label>Task</label>
       </div>
     </nuxt-link>
     <nuxt-link to="/taskCalenderStatistics" class="menu-button">
       <div class="menu-item">
-        <a-icon type="calendar" />
+        <a-icon type="calendar" class="menu-icon" />
         <label>Calendar</label>
       </div>
     </nuxt-link>
@@ -18,13 +18,13 @@
     </div>
     <nuxt-link to="/scheduleList" class="menu-button">
       <div class="menu-item">
-        <a-icon type="snippets" />
+        <a-icon type="snippets" class="menu-icon "/>
         <label>Schdules</label>
       </div>
     </nuxt-link>
     <nuxt-link to="/summarySchedule" class="menu-button">
       <div class="menu-item">
-        <a-icon type="bar-chart" />
+        <a-icon type="bar-chart" class="menu-icon" />
         <label>Progress</label>
       </div>
     </nuxt-link>
@@ -38,11 +38,14 @@ export default {
 </script>
 
 <style>
+.menu-icon {
+  font-size: 14px;
+}
 .add-schedule-button {
   width: 70px;
   height: 70px;
   font-size: 38px;
-  background: #6495ed;
+  background: rgb(90, 20, 140);
   border-radius: 35px;
   text-align: center;
   color: #fff;
@@ -52,7 +55,7 @@ export default {
   z-index: 1;
 }
 .add-schedule-button-bg {
-  background: cornflowerblue;
+  background: rgb(90, 20, 140);
   height: 46px;
   width: 74px;
   position: absolute;
@@ -69,7 +72,7 @@ export default {
   text-align: center;
   display: flex;
   align-items: flex-end;
-  background-color: rgba(0, 0, 0, 0);
+  background: rgb(90, 20, 140);
 }
 
 .menu-item {
@@ -77,13 +80,15 @@ export default {
   flex-direction: column;
   font-size: 12px;
 }
+.menu-button ::selection {
+  color: #fff;
+}
 
 .menu-button {
   flex: 1;
   padding: 8px 5px;
-  /* font-weight: bold; */
   color: #fff;
-  background: cornflowerblue;
+  background: rgb(90, 20, 140);
   height: 46px;
 }
 </style>
