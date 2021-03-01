@@ -31,13 +31,13 @@ PlanController.delete('/:id', async (req: Request, res: Response, next: NextFunc
   }
 })
 
-PlanController.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    await Plan.findByIdAndUpdate(req.params.id, req.body, () => {
-      res.send({ message: "success" })
-    })
-  } catch (err) {
-    next(err)
-  }
-})
+// PlanController.post('/:id', async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     await Plan.findByIdAndUpdate(req.params.id, req.body, (error, docs) => {
+//       res.send({ message: "success" })
+//     })
+//   } catch (err) {
+//     next(err)
+//   }
+// })
 

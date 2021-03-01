@@ -4,6 +4,9 @@
       "task": "Get up before 7:30"
     },
     {
+      "task": "Eat breakfast"
+    },
+    {
       "task": "Go to work before 9:00"
     },
     {
@@ -13,7 +16,7 @@
       "task": "Go to bed before 23:00"
     },
     {
-      "task": "Eat breakfast"
+      "task": "Plan for tomorow"
     }
   ]
 }
