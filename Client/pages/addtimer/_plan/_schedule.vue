@@ -129,12 +129,7 @@ export default {
       let time = moment();
       this.timerForm.setFieldsValue({ startTime: time });
       this.validateTimer();
-      this.intervelTimer = moment.duration(1, "seconds").timer(
-        {
-          loop: true,
-        },
-        this.setIntervelTime
-      );
+      this.intervelTimer = setInterval(this.setIntervelTime, 1000)
     },
     endTimer() {
       this.validateTimer();
@@ -145,7 +140,7 @@ export default {
 
     validateTimer() {
       if (!!this.intervelTimer) {
-        this.intervelTimer.stop();
+        clearInterval(this.intervelTimer)
       }
     },
     planChange(palneId) {
@@ -167,7 +162,7 @@ export default {
         }
       });
     },
-    setIntervelTime(time) {
+    setIntervelTime() {
       let startTime = this.timerForm.getFieldValue("startTime");
       let duration = moment.duration(moment().diff(startTime));
       this.durationTime = duration.seconds()+duration.hours()*60*60+duration.minutes()*60;
