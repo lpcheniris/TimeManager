@@ -16,18 +16,19 @@
                 :style="{ background: schedule.plan.color }"
               ></div>
               <div>{{ schedule.plan.name }}</div>
-              <div>
-                <a-icon
+            </div>
+            <div class="time-period" :style="{ color: schedule.plan.color }">
+                {{ schedule.timePeriod.text }}
+               <div class="icon-wrraper">
+                  <a-icon
                   class="done-icon"
                   type="check-circle"
                   theme="twoTone"
                   two-tone-color="#52c41a"
-                  v-if="schedule.duration <= countRestTime(schedule.restTime)"
+                  v-show="schedule.isDone"
                 />
-              </div>
-            </div>
-            <div class="time-period" :style="{ color: schedule.plan.color }">
-              {{ schedule.timePeriod.text }}
+               </div>
+              
             </div>
           </div>
           <div class="list-content">
@@ -103,6 +104,13 @@
                 v-on:click="handleShowTimer(schedule._id, $event)"
                 >Show Timer</a-button
               >
+              <a-button
+                type="primary"
+                shape="round"
+                size="small"
+                v-on:click="handleDeleteSchedule(schedule._id, $event)"
+                >Delete</a-button
+              >
             </div>
           </div>
         </nuxt-link>
@@ -129,7 +137,6 @@ export default {
   },
   methods: {
     loadSechedules() {
-      console.log("ok");
       axios({
         method: "get",
         url: "/api/schedule/",
@@ -172,6 +179,7 @@ export default {
     },
     handleDone(scheduleID, event) {
       event.preventDefault();
+      let _this = this
       this.$confirm({
         title: "Do you Want to done the schedule?",
         onOk() {
@@ -179,8 +187,8 @@ export default {
             method: "put",
             url: "/api/schedule/" + scheduleID,
           }).then((res) => {
-            this.$message.success("Successfully!");
-            this.loadSechedules();
+            _this.$message.success("Successfully!");
+            _this.loadSechedules();
           });
         },
       });
@@ -202,11 +210,33 @@ export default {
         }
       });
     },
+    handleDeleteSchedule(scheduleId, event) {
+      event.preventDefault();
+      let _this = this
+      this.$confirm({
+        title: "Do you Want to done the schedule?",
+        onOk() {
+          axios({
+            method: "delete",
+            url: "/api/schedule/" + scheduleId,
+          }).then(() => {
+            _this.$message.success("Delete Data Successfully!");
+            _this.loadSechedules();
+          });
+        },
+      });
+    },
   },
 };
 </script>
 
 <style>
+.time-period .icon-wrraper {
+  width: 34px;
+}
+.time-period {
+  display: flex;
+}
 .list-rate-container span {
   margin-right: 10px;
 }
