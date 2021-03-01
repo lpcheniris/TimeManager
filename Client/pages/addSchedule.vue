@@ -57,14 +57,22 @@
         />
       </a-form-item>
       <div class="rate-wrapper">
-         <div class="rate-container">
-        <label>Importance:</label>
-        <a-rate :value="importance" @change="handleImportanceRateChange" :allowClear="false" />
-      </div>
-      <div class="rate-container">
-        <label>Emergency:</label>
-        <a-rate :value="emergency" @change="handleeMergencyRateChange" :allowClear="false" />
-      </div>
+        <div class="rate-container">
+          <label>Importance:</label>
+          <a-rate
+            :value="importance"
+            @change="handleImportanceRateChange"
+            :allowClear="false"
+          />
+        </div>
+        <div class="rate-container">
+          <label>Emergency:</label>
+          <a-rate
+            :value="emergency"
+            @change="handleeMergencyRateChange"
+            :allowClear="false"
+          />
+        </div>
       </div>
       <div class="submit-container">
         <a-button type="primary" html-type="submit" @click="handleSubmit"
@@ -103,11 +111,11 @@ export default {
   },
   methods: {
     moment,
-    handleeMergencyRateChange(v){
-      this.emergency = v
+    handleeMergencyRateChange(v) {
+      this.emergency = v;
     },
-    handleImportanceRateChange(v){
-      this.importance = v
+    handleImportanceRateChange(v) {
+      this.importance = v;
     },
     disabledDate(current) {
       // Can not select days before today and today
@@ -141,6 +149,8 @@ export default {
             .then(() => {
               this.$message.success("Successfully!");
               this.addScheduleForm.resetFields();
+              this.importance = 1;
+              this.emergency = 1;
             })
             .catch(function (error) {
               _this.$message.error(error.response.data.errors[0].msg);
