@@ -50,7 +50,7 @@ ScheduleController.delete("/:id", async (req: Request, res: Response, next: Next
 
 ScheduleController.get('/byPlanId/:planId', async (req: Request, res: Response, next: NextFunction) => {
   try {
-    let data = await Schedule.find({ "plan": { "_id": req.params.planId } }, "schedule").exec()
+    let data = await Schedule.find({ "plan": { "_id": req.params.planId } }, "schedule").sort({isDone: 1}).exec()
     res.send({ data: data })
   } catch (err) {
     next(err)
