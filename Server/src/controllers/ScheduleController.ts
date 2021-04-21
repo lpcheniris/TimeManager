@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import { check, validationResult } from "express-validator" 
 
 import { Schedule } from "../models/Schedule"
+import { Timer } from "../models/Timer"
 
 export const ScheduleController: Router = Router();
 
@@ -40,6 +41,7 @@ ScheduleController.get('/', async (req: Request, res: Response, next: NextFuncti
 ScheduleController.delete("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
     await Schedule.remove({ _id: req.params.id })
+    await Timer.deleteMany({schedule: req.params.id})
     res.send({ message: "deleted" })
   } catch (err) {
     next(err)
