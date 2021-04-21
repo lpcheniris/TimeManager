@@ -1,5 +1,13 @@
 <template>
   <div>
+    <div class="search-container">
+      <a-switch
+        un-checked-children="Not Done"
+        checked-children="Done"
+        :value="isDoneSwitch"
+        @change="isDoneChange"
+      />
+    </div>
     <div :key="schedule._id" v-for="schedule in schedules">
       <div
         class="schedule-item-container"
@@ -18,17 +26,15 @@
               <div>{{ schedule.plan.name }}</div>
             </div>
             <div class="time-period" :style="{ color: schedule.plan.color }">
-                {{ schedule.timePeriod.text }}
-               <div class="icon-wrraper">
-                  <a-icon
-                  class="done-icon"
+              {{ schedule.timePeriod.text }}
+              <div class="icon-wrraper">
+                <a-icon
                   type="check-circle"
                   theme="twoTone"
                   two-tone-color="#52c41a"
                   v-show="schedule.isDone"
                 />
-               </div>
-              
+              </div>
             </div>
           </div>
           <div class="list-content">
@@ -129,17 +135,22 @@ export default {
   data() {
     return {
       schedules: [],
+      isDoneSwitch: false,
     };
   },
 
   mounted: function () {
-    this.loadSechedules();
+    this.loadSechedules({ isDone: this.isDoneSwitch });
   },
   methods: {
-    loadSechedules() {
+    isDoneChange(checked) {
+      this.loadSechedules({ isDone: checked });
+    },
+    loadSechedules(param) {
       axios({
         method: "get",
-        url: "/api/schedule/",
+        url: "/api/schedule",
+        params: param,
       }).then((res) => {
         this.schedules = res.data.data;
       });
@@ -179,7 +190,7 @@ export default {
     },
     handleDone(scheduleID, event) {
       event.preventDefault();
-      let _this = this
+      let _this = this;
       this.$confirm({
         title: "Do you Want to done the schedule?",
         onOk() {
@@ -212,7 +223,7 @@ export default {
     },
     handleDeleteSchedule(scheduleId, event) {
       event.preventDefault();
-      let _this = this
+      let _this = this;
       this.$confirm({
         title: "Do you Want to done the schedule?",
         onOk() {
@@ -231,8 +242,14 @@ export default {
 </script>
 
 <style>
+.search-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+}
 .time-period .icon-wrraper {
-  width: 34px;
+  font-size: 16px;
+  margin-left: 5px;
 }
 .time-period {
   display: flex;
