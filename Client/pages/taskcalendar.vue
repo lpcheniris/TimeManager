@@ -16,7 +16,22 @@
         :disabled="!isModify"
         type="primary"
         html-type="submit"
-        @click="handleSubmit"
+        @click="handleTaskSubmit"
+        >Submit</a-button
+      >
+    </div>
+
+    <div>
+      <a-textarea 
+      :auto-size="{ minRows: 2, maxRows: 5 }"
+      v-model="diary"
+      @change="onDiaryChange"
+      > </a-textarea>
+      <a-button
+        :disabled="!isDiaryModify"
+        type="primary"
+        html-type="submit"
+        @click="handleDiarySubmit"
         >Submit</a-button
       >
     </div>
@@ -38,6 +53,8 @@ export default {
       tasks: [],
       taskisDone: [],
       isModify: false,
+      diary:"",
+      isDiaryModify: false
     };
   },
   mounted: function () {
@@ -62,7 +79,11 @@ export default {
       this.taskisDone = checkedValues;
       this.isModify = true;
     },
-    handleSubmit() {
+    onDiaryChange(e) {
+      this.diary = e.target.value;
+      this.isDiaryModify = true;
+    },
+    handleTaskSubmit() {
       axios({
         method: "post",
         url: "/api/taskcalendar",
@@ -73,12 +94,27 @@ export default {
       })
         .then(() => {
           this.$message.success("Successfully!");
-          this.addScheduleForm.resetFields();
         })
         .catch(function (error) {
           this.$message.error("I'm sorry!");
         });
     },
+    handleDiarySubmit(){
+      axios({
+        method: "post",
+        url: "/api/diary",
+        data: {
+          diary: this.diary,
+          date: moment(this.today).format("x"),
+        },
+      })
+        .then(() => {
+          this.$message.success("Successfully!");
+        })
+        .catch(function (error) {
+          this.$message.error("I'm sorry!");
+        });
+    }
   },
 };
 </script>
