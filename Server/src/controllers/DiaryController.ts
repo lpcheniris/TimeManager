@@ -7,7 +7,7 @@ export const DiaryController: Router = Router();
 DiaryController.post('/', async (req: Request, res: Response, next: NextFunction) => {
   let diaryData = req.body;
   try {
-    let result = null
+    let result: any
     let isExist = await Diary.exists({date: diaryData.date})
     if (isExist) {
       result = await Diary.findOneAndUpdate({date: diaryData.date}, {diary: diaryData.diary});
