@@ -6,6 +6,7 @@ import { ScheduleController } from './controllers/ScheduleController';
 import { PublicController } from './controllers/PublicController';
 import { TaskController } from './controllers/TaskController';
 import { TaskCalendarController } from './controllers/TaskCalendarController';
+import { DiaryController } from './controllers/DiaryController';
 
 
 const _routes: [string, Router][] = [
@@ -14,7 +15,8 @@ const _routes: [string, Router][] = [
     ['/plan', PlanController],
     ['/schedule', ScheduleController],
     ['/task', TaskController],
-    ['/taskCalendar', TaskCalendarController]
+    ['/taskCalendar', TaskCalendarController],
+    ['/diary', DiaryController]
 ];
 
 export const routes = (app: Application) => {
