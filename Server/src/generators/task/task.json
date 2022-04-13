@@ -7,16 +7,22 @@
       "task": "Eat breakfast"
     },
     {
-      "task": "Go to work before 9:00"
+      "task": "Go to work before 9:30"
     },
     {
-      "task": "Keep 1 hour"
+      "task": "Keep half hour"
     },
     {
       "task": "Go to bed before 23:00"
     },
     {
       "task": "Plan for tomorow"
+    },
+    {
+      "task": "Learn english half hour"
+    },
+    {
+      "task": "Learn code half hour"
     }
   ]
 }
