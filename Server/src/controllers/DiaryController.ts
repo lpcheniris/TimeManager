@@ -6,14 +6,11 @@ export const DiaryController: Router = Router();
 
 DiaryController.post('/', async (req: Request, res: Response, next: NextFunction) => {
   let diaryData = req.body;
-  let date = {date: diaryData.date}
   try {
     let result = null
-    let isExist = await Diary.exists(date)
+    let isExist = await Diary.exists({date: diaryData.date})
     if (isExist) {
-      result = await Diary.findOneAndUpdate({date: date}, {diary: diaryData.tasks}, {
-      new: true
-    });
+      result = await Diary.findOneAndUpdate({date: diaryData.date}, {diary: diaryData.diary});
     } else {
       result = await new Diary(diaryData).save()
     }
@@ -33,9 +30,8 @@ DiaryController.delete("/:id", async (req: Request, res: Response, next: NextFun
 })
 
 DiaryController.get("/byDate/:date", async (req: Request, res: Response, next: NextFunction) => {
-  let date = req.params
   try {
-    const data = await Diary.find({date: date}).exec()
+    const data = await Diary.findOne({date: req.params.date}).exec()
     res.send({ data: data })
   } catch (err) {
     next(err)

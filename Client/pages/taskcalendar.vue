@@ -72,6 +72,15 @@ export default {
         this.taskisDone = res.data.data.tasks;
       }
     });
+     axios({
+      method: "get",
+      url: "/api/diary/byDate/" + moment(this.today).format("x"),
+    }).then((res) => {
+      let data = res.data.data
+      if (data) {
+        this.diary = data.diary;
+      }
+    });
   },
 
   methods: {
