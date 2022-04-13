@@ -140,17 +140,19 @@ export default {
   },
 
   mounted: function () {
-    this.loadSechedules({ isDone: this.isDoneSwitch });
+    this.loadSechedules();
   },
   methods: {
     isDoneChange(checked) {
+      this.isDoneSwitch = checked;
       this.loadSechedules({ isDone: checked });
     },
     loadSechedules(param) {
+      let data = {isDone: this.isDoneSwitch, ...param}
       axios({
         method: "get",
         url: "/api/schedule",
-        params: param,
+        params: data,
       }).then((res) => {
         this.schedules = res.data.data;
       });
