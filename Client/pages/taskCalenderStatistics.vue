@@ -41,6 +41,7 @@
         />
       </a-calendar>
     </div>
+    <DiaryList :startTime="startTime" :endTime="endTime"/>
   </div>
 </template>
 
@@ -49,9 +50,13 @@ import moment from "moment";
 import axios from "axios";
 import { convertSecondsTOTime } from "../utils/time";
 import _ from "lodash";
+import DiaryList from "./diaryList.vue"
 
 export default {
   name: "taskCalenderStatistics",
+  components: {
+    DiaryList
+  },
   data() {
     return {
       startTime: null,
