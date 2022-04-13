@@ -21,12 +21,13 @@
       >
     </div>
 
-    <div>
+    <div class="diary-container">
       <a-textarea 
-      :auto-size="{ minRows: 2, maxRows: 5 }"
+      :auto-size="{ minRows: 5, maxRows: 10 }"
       v-model="diary"
       @change="onDiaryChange"
       > </a-textarea>
+      <div class="button-container">
       <a-button
         :disabled="!isDiaryModify"
         type="primary"
@@ -34,6 +35,7 @@
         @click="handleDiarySubmit"
         >Submit</a-button
       >
+      </div>
     </div>
   </div>
 </template>
@@ -129,6 +131,10 @@ export default {
 </script>
 
 <style>
+.diary-container {
+  margin: 30px 10px 20px;
+}
+
 .button-container {
   padding: 10px;
   text-align: center;

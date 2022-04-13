@@ -2,8 +2,12 @@
   <div>
     <div :key="diaryItem._id" v-for="diaryItem in diarys">
       <div class="diary-item-container">
-        {{ moment(diaryItem.date).format("MM-DD") }}
-        {{ diaryItem.diary }}
+        <div class="diary-time">
+          {{ moment(diaryItem.date).format("MM-DD") }}
+        </div>
+        <div class="diary-content">
+          <pre>{{ diaryItem.diary }}</pre>
+        </div>
       </div>
     </div>
   </div>
@@ -32,7 +36,7 @@ export default {
       this.loadDiarys();
     },
     endTime(newVal) {
-      this.diaryEndTime = newVal; 
+      this.diaryEndTime = newVal;
       this.loadDiarys();
     },
   },
@@ -57,4 +61,18 @@ export default {
 </script>
 
 <style>
+.diary-content {
+  padding: 10px;
+}
+.diary-time {
+  padding: 10px;
+  font-weight: bold;
+  border-bottom: 1px solid rgb(90, 20, 140, 0.8);
+}
+.diary-item-container {
+  border: solid 2px;
+  margin: 20px;
+  border-radius: 5px;
+  border: 1px solid rgb(90, 20, 140, 0.8);
+}
 </style>
