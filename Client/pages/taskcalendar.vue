@@ -105,6 +105,7 @@ export default {
       })
         .then(() => {
           this.$message.success("Successfully!");
+          this.isModify = false
         })
         .catch(function (error) {
           this.$message.error("I'm sorry!");
@@ -121,6 +122,7 @@ export default {
       })
         .then(() => {
           this.$message.success("Successfully!");
+          this.isDiaryModify = false
         })
         .catch(function (error) {
           this.$message.error("I'm sorry!");
