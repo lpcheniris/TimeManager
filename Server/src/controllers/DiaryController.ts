@@ -41,7 +41,7 @@ DiaryController.get("/byDate/:date", async (req: Request, res: Response, next: N
 DiaryController.get('/byDateRange/:startDate/:endDate', async (req: Request, res: Response, next: NextFunction) => {
   let {startDate, endDate } = req.params
   try {
-    const data = await Diary.find({date: {$gte: startDate, $lt: endDate}})
+    const data = await Diary.find({date: {$gte: startDate, $lt: endDate}}).sort({date: -1}).exec()
     res.send({ data: data })
   } catch (err) {
     next(err)
