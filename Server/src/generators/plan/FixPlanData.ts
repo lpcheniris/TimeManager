@@ -13,9 +13,7 @@ async function fixPlans() {
       Plan.findOneAndUpdate({name: v.name}, {$set:{
         duration: v.duration,
         durationUnit: v.durationUnit
-      }}, (error, plan)=> {
-          console.log(error, plan)
-      })
+      }})
     })
   } catch(e) {
     console.error(e)
