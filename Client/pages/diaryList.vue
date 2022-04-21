@@ -61,6 +61,10 @@ export default {
 </script>
 
 <style>
+.diary-content pre {
+  word-wrap: break-word;
+  white-space: break-spaces;
+}
 .diary-content {
   padding: 10px;
 }
