@@ -165,11 +165,14 @@ export default {
 <style>
 .rate-wrapper {
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
 }
 .rate-container label {
   margin-right: 10px;
 }
 .rate-container {
+  margin: auto;
   display: flex;
   align-items: center;
   flex-direction: row;

@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+ # name is optional for our mongodb
+  timemanagerdb:
+    # since mongo is an offical image we can use it.
+    image: "mongo"
+    # container_name:
+    # the port that we want to publish for mongodb
+    ports:
+      - "27017:27017"
+
+    # our mongodb depends on volume to keep the data alive.
+    volumes:
+      - timemanagerdb-data:/Users/lpchen/Workspace/mine/TimeManager/TimeManagerDB
+
+    # our environment variable
+    # environment:
+    #   MONGO_INITDB_ROOT_USERNAME: "root"
+    #   MONGO_INITDB_ROOT_PASSWORD: "root"
+    #   MONGO_INITDB_DATABASE: "timemanagerdb"
+
+  # name is optional for our backend
+  # api:
+  #     build:
+  #       dockerfile: Dockerfile
+  #       context: "./Server"
+  #     depends_on:
+  #       - timemanagerdb
+  #     ports:
+  #     - "8000:8000"
+  #     volumes:
+  #       - /app/node_modules
+  #       - ./Server:/app
+  # client:
+  #   stdin_open: true
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   depends_on:
+  #       - api
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: ./client
+  #   volumes:
+  #     - /app/node_modules
+  #     - ./Client:/app
+volumes:
+  timemanagerdb-data:
