@@ -5,5 +5,5 @@ COPY package-lock.json ./
 COPY ./ ./
 EXPOSE 3000
 RUN npm i
-RUN npm build
+RUN npm run build
 CMD ["npm", "run", "start"]
