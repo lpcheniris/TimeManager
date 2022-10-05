@@ -10,7 +10,18 @@
         </a-col>
       </a-row>
     </a-checkbox-group>
+    <div class="mood-curve">
+      <h3>Mood Curve</h3>
 
+      <a-slider
+        :value="moodCurve"
+        :min="1"
+        :max="10"
+        :step="1"
+        @change="onMoodCurveChange"
+      />
+
+    </div>
     <div class="button-container">
       <a-button
         :disabled="!isModify"
@@ -22,19 +33,20 @@
     </div>
 
     <div class="diary-container">
-      <a-textarea 
-      :auto-size="{ minRows: 5, maxRows: 10 }"
-      v-model="diary"
-      @change="onDiaryChange"
-      > </a-textarea>
-      <div class="button-container">
-      <a-button
-        :disabled="!isDiaryModify"
-        type="primary"
-        html-type="submit"
-        @click="handleDiarySubmit"
-        >Submit</a-button
+      <a-textarea
+        :auto-size="{ minRows: 5, maxRows: 10 }"
+        v-model="diary"
+        @change="onDiaryChange"
       >
+      </a-textarea>
+      <div class="button-container">
+        <a-button
+          :disabled="!isDiaryModify"
+          type="primary"
+          html-type="submit"
+          @click="handleDiarySubmit"
+          >Submit</a-button
+        >
       </div>
     </div>
   </div>
@@ -55,8 +67,9 @@ export default {
       tasks: [],
       taskisDone: [],
       isModify: false,
-      diary:"",
-      isDiaryModify: false
+      diary: "",
+      isDiaryModify: false,
+      moodCurve: 1,
     };
   },
   mounted: function () {
@@ -72,13 +85,14 @@ export default {
     }).then((res) => {
       if (res.data.data) {
         this.taskisDone = res.data.data.tasks;
+        this.moodCurve = res.data.data.moodCurve;
       }
     });
-     axios({
+    axios({
       method: "get",
       url: "/api/diary/byDate/" + moment(this.today).format("x"),
     }).then((res) => {
-      let data = res.data.data
+      let data = res.data.data;
       if (data) {
         this.diary = data.diary;
       }
@@ -94,6 +108,10 @@ export default {
       this.diary = e.target.value;
       this.isDiaryModify = true;
     },
+    onMoodCurveChange(value) {
+      this.moodCurve = value;
+      this.isModify = true;
+    },
     handleTaskSubmit() {
       axios({
         method: "post",
@@ -101,17 +119,18 @@ export default {
         data: {
           tasks: this.taskisDone,
           date: moment(this.today).format("x"),
+          moodCurve: this.moodCurve
         },
       })
         .then(() => {
           this.$message.success("Successfully!");
-          this.isModify = false
+          this.isModify = false;
         })
         .catch(function (error) {
           this.$message.error("I'm sorry!");
         });
     },
-    handleDiarySubmit(){
+    handleDiarySubmit() {
       axios({
         method: "post",
         url: "/api/diary",
@@ -122,17 +141,20 @@ export default {
       })
         .then(() => {
           this.$message.success("Successfully!");
-          this.isDiaryModify = false
+          this.isDiaryModify = false;
         })
         .catch(function (error) {
           this.$message.error("I'm sorry!");
         });
-    }
+    },
   },
 };
 </script>
 
 <style>
+.mood-curve {
+  padding: 20px;
+}
 .diary-container {
   margin: 30px 10px 20px;
 }

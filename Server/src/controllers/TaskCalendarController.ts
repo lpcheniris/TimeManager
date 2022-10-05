@@ -11,7 +11,7 @@ TaskCalendarController.post('/', async (req: Request, res: Response, next: NextF
     let result:any
     let isExist = await TaskCalendar.exists(date)
     if (isExist) {
-      result = await TaskCalendar.findOneAndUpdate({date: taskCalendar.date}, {tasks: taskCalendar.tasks}, {
+      result = await TaskCalendar.findOneAndUpdate({date: taskCalendar.date}, {tasks: taskCalendar.tasks , moodCurve: taskCalendar.moodCurve}, {
       new: true
     });
     } else {
