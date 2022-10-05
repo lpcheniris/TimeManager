@@ -17,7 +17,10 @@
         icon="right"
         size="small"
         @click="handleNextDay"
-        :disabled="currentDate && currentDate.format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD')"
+        :disabled="
+          currentDate &&
+          currentDate.format('YYYY-MM-DD') >= moment().format('YYYY-MM-DD')
+        "
       />
     </div>
     <div class="count-container">
@@ -31,7 +34,11 @@
       </div>
     </div>
     <div class="calendar-container">
-      <a-calendar :fullscreen="true" :header-render="headerRender" :value="currentDate">
+      <a-calendar
+        :fullscreen="true"
+        :header-render="headerRender"
+        :value="currentDate"
+      >
         <div
           class="task-date-label"
           slot="dateCellRender"
@@ -41,7 +48,8 @@
         />
       </a-calendar>
     </div>
-    <DiaryList :startTime="startTime" :endTime="endTime"/>
+    <MoodCurve :moodCurveData=moodCurveData />
+    <DiaryList :startTime="startTime" :endTime="endTime" />
   </div>
 </template>
 
@@ -50,12 +58,14 @@ import moment from "moment";
 import axios from "axios";
 import { convertSecondsTOTime } from "../utils/time";
 import _ from "lodash";
-import DiaryList from "./diaryList.vue"
+import DiaryList from "./diaryList.vue";
+import MoodCurve from "../components/MoodCurve.vue";
 
 export default {
   name: "taskCalenderStatistics",
   components: {
-    DiaryList
+    DiaryList,
+    MoodCurve,
   },
   data() {
     return {
@@ -64,27 +74,28 @@ export default {
       taskCalendarListByMonth: [],
       tasks: [],
       currentDate: moment(),
-      period: "month"
+      period: "month",
+      moodCurveData: [],
     };
   },
   computed: {
     taskTimes: function () {
       let taskObject = {};
-    
-        this.tasks.forEach((v, i) => {
-          taskObject[v._id] = {
-            task: v.task,
-            count: 0,
-          };
+
+      this.tasks.forEach((v, i) => {
+        taskObject[v._id] = {
+          task: v.task,
+          count: 0,
+        };
+      });
+      this.taskCalendarListByMonth.forEach((v, i) => {
+        v.tasks.forEach((taskId) => {
+          if (_.includes(Object.keys(taskObject), taskId)) {
+            taskObject[taskId].count += 1;
+          }
         });
-        this.taskCalendarListByMonth.forEach((v, i) => {
-          v.tasks.forEach((taskId) => {
-            if (_.includes(Object.keys(taskObject), taskId)) {
-              taskObject[taskId].count += 1;
-            }
-          });
-        });
-      
+      });
+
       return taskObject;
     },
     currentDateText: function () {
@@ -118,17 +129,26 @@ export default {
       this.loadTaskCalendarData();
     },
     setStartAndEndTime() {
-      let newCurrentDate = this.currentDate.format("YYYY-MM-DD")
-      this.startTime = moment(newCurrentDate).startOf("month")
-      this.endTime = moment(newCurrentDate).endOf("month")
+      let newCurrentDate = this.currentDate.format("YYYY-MM-DD");
+      this.startTime = moment(newCurrentDate).startOf("month");
+      this.endTime = moment(newCurrentDate).endOf("month");
     },
     loadTaskCalendarData() {
       this.setStartAndEndTime();
       axios({
         method: "get",
-        url: `/api/taskcalendar/byDateRange/${this.startTime.format("x")}/${this.endTime.format("x")}`,
+        url: `/api/taskcalendar/byDateRange/${this.startTime.format(
+          "x"
+        )}/${this.endTime.format("x")}`,
       }).then((res) => {
         this.taskCalendarListByMonth = res.data.data;
+        this.moodCurveData =
+          res.data.data.length > 0
+            ? res.data.data.map((v) => ({
+                date: v.date,
+                moodCurve: v.moodCurve,
+              }))
+            : [];
       });
     },
     checkTaskValiable() {
@@ -148,7 +168,7 @@ export default {
           : 0.1;
         return `rgb(90, 20, 140, ${opacity})`;
       }
-      return `rgba(90, 20, 140, 0.1)`
+      return `rgba(90, 20, 140, 0.1)`;
     },
     calculateTaskDisplay(date) {
       return date.isBefore(this.endTime) && date.isAfter(this.startTime);
@@ -161,11 +181,13 @@ export default {
 </script>
 
 <style>
-.ant-fullcalendar-fullscreen .ant-fullcalendar-date:hover { 
-   background: #fff;
+.ant-fullcalendar-fullscreen .ant-fullcalendar-date:hover {
+  background: #fff;
 }
-.ant-fullcalendar-fullscreen .ant-fullcalendar-selected-day .ant-fullcalendar-date {
-    background: #fff;
+.ant-fullcalendar-fullscreen
+  .ant-fullcalendar-selected-day
+  .ant-fullcalendar-date {
+  background: #fff;
 }
 .ant-fullcalendar-selected-day .ant-fullcalendar-date {
   background-color: #fff;
