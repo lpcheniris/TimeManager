@@ -14,7 +14,7 @@
     "@nuxtjs/proxy": "^2.0.1",
     "ant-design-vue": "^1.6.4",
     "axios": "^0.20.0",
-    "chart.js": "^3.9.1",
+    "chart.js": "2.9.4",
     "fetch": "^1.1.0",
     "lodash": "^4.17.21",
     "moment": "^2.27.0",
