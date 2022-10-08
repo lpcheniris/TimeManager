@@ -48,7 +48,7 @@
         />
       </a-calendar>
     </div>
-    <MoodCurve :moodCurveData=moodCurveData />
+    <!-- <MoodCurve :moodCurveData=moodCurveData /> -->
     <DiaryList :startTime="startTime" :endTime="endTime" />
   </div>
 </template>
@@ -59,13 +59,13 @@ import axios from "axios";
 import { convertSecondsTOTime } from "../utils/time";
 import _ from "lodash";
 import DiaryList from "./diaryList.vue";
-import MoodCurve from "../components/MoodCurve.vue";
+// import MoodCurve from "../components/MoodCurve.vue";
 
 export default {
   name: "taskCalenderStatistics",
   components: {
     DiaryList,
-    MoodCurve,
+    // MoodCurve,
   },
   data() {
     return {
@@ -75,7 +75,7 @@ export default {
       tasks: [],
       currentDate: moment(),
       period: "month",
-      moodCurveData: [],
+      // moodCurveData: [],
     };
   },
   computed: {
@@ -142,13 +142,13 @@ export default {
         )}/${this.endTime.format("x")}`,
       }).then((res) => {
         this.taskCalendarListByMonth = res.data.data;
-        this.moodCurveData =
-          res.data.data.length > 0
-            ? res.data.data.map((v) => ({
-                date: v.date,
-                moodCurve: v.moodCurve,
-              }))
-            : [];
+        // this.moodCurveData =
+        //   res.data.data.length > 0
+        //     ? res.data.data.map((v) => ({
+        //         date: v.date,
+        //         moodCurve: v.moodCurve,
+        //       }))
+        //     : [];
       });
     },
     checkTaskValiable() {
